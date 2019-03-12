@@ -10,11 +10,9 @@ class Carrier(db.Model):
         self.name = n
         self.code = c
 
-    @staticmethod
     def getName(self):
         return self.name
 
-    @staticmethod
     def getCode(self):
         return self.code
 

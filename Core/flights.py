@@ -4,50 +4,45 @@ from __init__ import db
 class Flights(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cancelled = db.Column(db.Integer)
-    on_time = db.Column(db.Integer)
+    onTime = db.Column(db.Integer)
     delayed = db.Column(db.Integer)
     diverted = db.Column(db.Integer)
     total = db.Column(db.Integer)
 
     def __init__(self, cancel, onTime, delay, divert, t):
         self.cancelled = cancel
-        self.on_time = onTime
+        self.onTime = onTime
         self.delayed = delay
         self.diverted = divert
         self.total = t
 
-    @staticmethod
-    def get_cancelled(self):
+    def getCancelled(self):
         return self.cancelled
 
-    @staticmethod
-    def get_on_time(self):
+    def getOnTime(self):
         return self.on_time
 
-    @staticmethod
-    def get_delayed(self):
+    def getDelayed(self):
         return self.delayed
 
-    @staticmethod
-    def get_diverted(self):
+    def getDiverted(self):
         return self.diverted
 
-    @staticmethod
-    def get_total(self):
+    def getTotal(self):
         return self.total
 
-    def set_cancelled(self, new_cancelled):
+    def setCancelled(self, new_cancelled):
         self.cancelled = new_cancelled
 
-    def set_on_time(self, new_on_time):
+    def setOnTime(self, new_on_time):
         self.on_time = new_on_time
 
-    def set_name(self, new_delayed):
+    def setName(self, new_delayed):
         self.delayed = new_delayed
 
-    def set_diverted(self, new_diverted):
+    def setDiverted(self, new_diverted):
         self.diverted = new_diverted
 
-    def set_total(self, new_total):
+    def setTotal(self, new_total):
         self.total = new_total
 
