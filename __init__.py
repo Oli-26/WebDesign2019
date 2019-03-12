@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 from Core.airport import Airport
+from Core.time import Time 
 db.init_app(app)
 
 db.create_all()
