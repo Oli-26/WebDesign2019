@@ -20,6 +20,9 @@ db = SQLAlchemy(app)
 from Core.airport import Airport
 from Core.time import Time 
 from Core.carrier import Carrier
+from Core.flights import Flights
+from Core.delays_minutes import Delays_minutes
+
 db.init_app(app)
 
 db.create_all()
