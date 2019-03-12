@@ -5,7 +5,7 @@ class Time(db.Model):
 	month = db.Column(db.Integer)
 	year = db.Column(db.Integer)
 
-	def __init__(self, n, c):
+	def __init__(self, m, y):
         month = m
         year = y
 
