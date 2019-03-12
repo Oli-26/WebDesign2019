@@ -14,15 +14,17 @@ jsondir = "airlines.json"
 
 
 
-#airport1 = Airport(c = "AAA", n = "American Airlines Air")
-#db.session.add(airport1)
-#db.session.commit()
+airport1 = Airport(c = "AAA", n = "American Airlines Air")
+db.session.add(airport1)
+db.session.commit()
 
 
 airports = Airport.query.all()
-print(str(airports.name))
+for a in airports:
+    #db.session.delete(a);
+    print(str(a.id) + "  |  " + a.getName() + "  |  " + a.getCode())
 
-
+db.session.commit()
 #time1 = Time(m = 6, y = 1997)
 #db.session.add(time1)
 #db.session.commit()

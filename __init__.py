@@ -13,9 +13,13 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 db = SQLAlchemy(app)
 
-migrate = Migrate(app, db)
+#migrate = Migrate(app, db)
+
+
+## INIT and UPDATE core objects
 from Core.airport import Airport
 from Core.time import Time 
+from Core.carrier import Carrier
 db.init_app(app)
 
 db.create_all()
