@@ -1,5 +1,5 @@
 from __init__ import db
-
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 class Delays_minutes(db.Model):
     id = db.Column(db.Integer, primary_key=True)

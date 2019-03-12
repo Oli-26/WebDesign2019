@@ -1,10 +1,11 @@
 from __init__ import db
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 class Statistics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    relationID = db.Column(db.Integer, ForeignKey=("Relation_table.id"), nullable=False)
-    flightID = db.Column(db.Integer, ForeignKey=("Flights.id"), nullable=False)
-    delayID = db.Column(db.Integer, ForeignKey=("Delays.id"), nullable=False)
+    relationID = db.Column(db.Integer, ForeignKey("Relation_table.id"), nullable=False)
+    flightID = db.Column(db.Integer, ForeignKey("Flights.id"), nullable=False)
+    delayID = db.Column(db.Integer, ForeignKey("Delays.id"), nullable=False)
 
     def __init__(self, rID, fID, dID):
         self.relationID = rID

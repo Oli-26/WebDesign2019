@@ -1,4 +1,5 @@
 from __init__ import db
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 
 class Carrier(db.Model):

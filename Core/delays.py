@@ -1,9 +1,10 @@
 from __init__ import db
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 class Delays(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    minutesID = db.Column(db.Integer, ForeignKey=("Delays_minutes.id"))
-    amountID = db.Column(db.Integer, ForeignKey=("Delays_amount.id"))
+    minutesID = db.Column(db.Integer, ForeignKey("Delays_minutes.id"))
+    amountID = db.Column(db.Integer, ForeignKey("Delays_amount.id"))
 
     def __init__(self, mID, aID):
         self.minutesID = mID
