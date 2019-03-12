@@ -10,7 +10,7 @@ class Delays_amount(db.Model):
     weather = db.Column(db.Integer)
     nationalAviationSystem = db.Column(db.Integer)
 
-    def __init__(self, la, c, s, w, nas, t):
+    def __init__(self, la, c, s, w, nas):
         self.lateAircraft = la
         self.carrier = c
         self.security = s

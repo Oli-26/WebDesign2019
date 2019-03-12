@@ -16,13 +16,13 @@ class Relation_table(db.Model):
     def getId(self):
         return self.id
 
-    def getAirportID(self, id):
+    def getAirportID(self):
         return self.airportID
 
-    def getCarrierID(self, id):
+    def getCarrierID(self):
         return self.carrierID
 
-    def getTimeID(self, id):
+    def getTimeID(self):
         return self.timeID
 
     def setId(self, newID):

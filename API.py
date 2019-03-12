@@ -14,9 +14,9 @@ from Core.carrier import Carrier
 from Core.flights import Flights
 from Core.delays_minutes import Delays_minutes
 from Core.delays_amount import Delays_amount
-#from Core.delays import Delays
-#from Core.relation_table import Relation_table
-#from Core.statistics import Statistics
+from Core.delays import Delays
+from Core.relation_table import Relation_table
+from Core.statistics import Statistics
 db.init_app(app)
 
 #try:
@@ -49,13 +49,16 @@ for c in carriers:
 times = Time.query.all()
 for t in times:
     print(t.getLabel(t.getId()))
-db.session.commit()
-    
+   
 
-#relations = Relation_table.query.all()
-#for r in relations:
-#    print(t.getAirportID() + " -- " + t.getCarrierID() + " -- " + t.getTimeID())
+relations = Relation_table.query.all()
+for r in relations:
+    print(str(r.getAirportID()) + " -- " + str(r.getCarrierID()) + " -- " + str(r.getTimeID()))
 
+        
+amountDelayed = Delays_amount.query.all()
+for a in amountDelayed:
+    print(str(a.carrier))
     #Load Json dictionary
     # in each instance, check if time, airport or carrier exists
     # if they do, get primary id, otherwise create new instance and get primary id
@@ -68,8 +71,10 @@ def Populate():
             airportId = -1
             carrierId = -1
             timeId = -1
-            print("looping(" + i +")")
+            print("looping(" + str(i) +")")
             i = i + 1
+            if(i > 100):
+                break
             try:
                 instance = Airport.query.filter_by(name=index["airport"]["name"]).first()
                 if(instance != None):
@@ -115,6 +120,8 @@ def Populate():
                 try:
                     print("relation found!")
                     newRelation = Relation_table(aID = airportId, cID = carrierId, tID = timeId)
+                    db.session.add(newRelation)
+                    db.session.commit()
                 except:
                     print("adding relation failed")
                     db.session.rollback()
@@ -150,27 +157,27 @@ def Populate():
                 print("minutes delayed add failed")
                 db.session.rollback()
             
-            
-            try:
-                lateAircraft =  index["statistics"]["# of delays"]["late aircraft"]
-                weather =  index["statistics"]["# of delays"]["weather"]
-                security =  index["statistics"]["# of delays"]["security"]
-                nas =  index["statistics"]["# of delays"]["national aviation system"]
-                carrier = index["statistics"]["# of delays"]["carrier"]
-                    
-                newAmountDelay = Delays_amount(la=lateAircraft, c=carrier, s=security, w=weather, nas = nas)
-                db.session.add(newAmountDelay)
-                db.session.commit()
-            except:
-                print("amount delayed add failed")
-                db.session.rollback()
-            
-            
-            
+        
+        try:
+            lateAircraft =  index["statistics"]["# of delays"]["late aircraft"]
+            weather =  index["statistics"]["# of delays"]["weather"]
+            security =  index["statistics"]["# of delays"]["security"]
+            nas =  index["statistics"]["# of delays"]["national aviation system"]
+            carrier = index["statistics"]["# of delays"]["carrier"]
+                
+            newAmountDelay = Delays_amount(la=lateAircraft, c=carrier, s=security, w=weather, nas = nas)
+            db.session.add(newAmountDelay)
+            db.session.commit()
+        except:
+            print("amount delayed add failed")
+            db.session.rollback()
+        
             
             
             
-#Populate()            
+            
+            
+Populate()            
             
 #app.run(port='5002', ssl_context='adhoc')  
 
