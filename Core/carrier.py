@@ -10,11 +10,17 @@ class Carrier(db.Model):
         self.name = n
         self.code = c
 
+    def getId(self):
+        return self.id
+
     def getName(self):
         return self.name
 
     def getCode(self):
         return self.code
+
+    def setId(self, newID):
+        self.id = newID
 
     def setName(self, new_name):
         self.name = new_name

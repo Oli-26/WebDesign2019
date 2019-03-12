@@ -14,7 +14,6 @@ class Statistics(db.Model):
     def getId(self):
         return self.id
 
-
     def getRelationID(self, id):
         return self.relationID
 

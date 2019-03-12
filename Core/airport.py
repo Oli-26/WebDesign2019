@@ -8,17 +8,22 @@ class Airport(db.Model):
     def __init__(self, n, c):
         self.name = n
         self.code = c
-    
-    def setName(self, n):
-        self.name = name
-        
-    def setCode(self, c):
-        self.code = c
-        
-        
+
+    def getId(self):
+        return self.id
+
     def getName(self):
         return self.name
     
     def getCode(self):
         return self.code
+
+    def setId(self, newID):
+        self.id = newID
+    
+    def setName(self, n):
+        self.name = name
         
+    def setCode(self, c):
+        self.code = c      
+    

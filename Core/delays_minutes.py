@@ -18,6 +18,9 @@ class Delays_minutes(db.Model):
         self.nationalAviationSystem = nas
         self.total = t
 
+    def getId(self):
+        return self.id
+
     def getLateAircraft(self):
         return self.lateAircraft
 
@@ -35,6 +38,9 @@ class Delays_minutes(db.Model):
 
     def getTotal(self):
         return self.total
+
+    def setId(self, newID):
+        self.id = newID
 
     def setLateAircraft(self, la):
         self.lateAircraft = la
