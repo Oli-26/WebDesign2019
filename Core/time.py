@@ -9,14 +9,23 @@ class Time(db.Model):
         self.month = m
         self.year = y
 
+    def getId(self):
+        return self.id
+
     def getMonth(self, id):
         return self.month
 
     def getYear(self, id):
         return self.year
-        
-    def getId(self):
-        return self.id
 
     def getLabel(self, id):
         return str(self.year) + "/" + str(self.month)
+
+    def setId(self, newID):
+        self.id = newID
+
+    def setMonth(self, m):
+        self.month = m
+
+    def setYear(self, y):
+        self.year = y

@@ -11,6 +11,10 @@ class Statistics(db.Model):
         self.flightID = fID
         self.delayID = dID
 
+    def getId(self):
+        return self.id
+
+
     def getRelationID(self, id):
         return self.relationID
 
@@ -19,3 +23,15 @@ class Statistics(db.Model):
 
     def getDelayID(self, id):
         return self.delayID
+    
+    def setId(self, newID):
+        self.id = newID
+    
+    def setRelationID(self, rID):
+        self.relationID = rID
+
+    def setFlightID(self, fID):
+        self.flightID = fID
+
+    def setDelayID(self, dID):
+        self.delayID = dID

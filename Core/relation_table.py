@@ -11,6 +11,9 @@ class Relation_table(db.Model):
         self.carrierID = cID
         self.timeID = tID
 
+    def getId(self):
+        return self.id
+
     def getAirportID(self, id):
         return self.airportID
 
@@ -19,3 +22,15 @@ class Relation_table(db.Model):
 
     def getTimeID(self, id):
         return self.timeID
+
+    def setId(self, newID):
+        self.id = newID
+
+    def setAirportID(self, aID):
+        self.airportID = aID
+
+    def setCarrierID(self, cID):
+        self.carrierID = cID
+
+    def setTimeID(self, tID):
+        self.timeID = tID
