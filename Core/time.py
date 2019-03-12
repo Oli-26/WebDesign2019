@@ -6,14 +6,17 @@ class Time(db.Model):
     year = db.Column(db.Integer)
 
     def __init__(self, m, y):
-        month = m
-        year = y
+        self.month = m
+        self.year = y
 
-    def getMonth(id):
-        return m
+    def getMonth(self, id):
+        return self.month
 
-    def getYear(id):
-        return y
+    def getYear(self, id):
+        return self.year
+        
+    def getId(self):
+        return self.id
 
-    def getLabel(id):
-        return y + "/" + m
+    def getLabel(self, id):
+        return str(self.year) + "/" + str(self.month)

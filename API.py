@@ -20,7 +20,7 @@ jsondir = "airlines.json"
 
 
 airports = Airport.query.all()
-print(airports)
+print(str(airports.name))
 
 
 #time1 = Time(m = 6, y = 1997)
