@@ -18,27 +18,21 @@ class Delays_minutes(db.Model):
         self.nationalAviationSystem = nas
         self.total = t
 
-    @staticmethod
     def getLateAircraft(self):
         return self.lateAircraft
 
-    @staticmethod
     def getCarrier(self):
         return self.carrier
 
-    @staticmethod
     def getSecurity(self):
         return self.security
 
-    @staticmethod
     def getWeather(self):
         return self.weather
 
-    @staticmethod
     def getNationalAviationSystem(self):
         return self.nationalAvaiationSystem
 
-    @staticmethod
     def getTotal(self):
         return self.total
 
