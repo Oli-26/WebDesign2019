@@ -11,11 +11,11 @@ from Core.airport import Airport
 from Core.time import Time 
 from Core.carrier import Carrier
 from Core.flights import Flights
-#from Core.delays_minutes import Delays_minutes
-#from Core.delays_amount import Delays_amount
-#from Core.delays import Delays
+from Core.delays_minutes import Delays_minutes
+from Core.delays_amount import Delays_amount
+from Core.delays import Delays
 from Core.relation_table import Relation_table
-#from Core.statistics import Statistics
+from Core.statistics import Statistics
 
 
 
@@ -29,10 +29,12 @@ for a in airports:
     #db.session.delete(a);
     print(str(a.id) + "  |  " + a.getName() + "  |  " + a.getCode())
 
-#db.session.commit()
-#time1 = Time(m = 6, y = 1997)
-#db.session.add(time1)
-#db.session.commit()
+
+
+carriers = Carrier.query.all()
+for c in carriers:
+    #db.session.delete(a);
+    print(str(c.id) + "  |  " + c.getName() + "  |  " + c.getCode())
 
 times = Time.query.all()
 for t in times:

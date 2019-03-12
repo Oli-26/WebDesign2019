@@ -23,11 +23,11 @@ from Core.airport import Airport
 from Core.time import Time 
 from Core.carrier import Carrier
 from Core.flights import Flights
-#from Core.delays_minutes import Delays_minutes
-#from Core.delays_amount import Delays_amount
-#from Core.delays import Delays
+from Core.delays_minutes import Delays_minutes
+from Core.delays_amount import Delays_amount
+from Core.delays import Delays
 from Core.relation_table import Relation_table
-#from Core.statistics import Statistics
+from Core.statistics import Statistics
 
 db.init_app(app)
 try:
