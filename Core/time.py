@@ -1,6 +1,7 @@
 from __init__ import db
 
 class Time(db.Model):
+    __tablename__ = 'Time'
     id = db.Column(db.Integer, primary_key=True)
     month = db.Column(db.Integer)
     year = db.Column(db.Integer)

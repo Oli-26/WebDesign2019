@@ -2,6 +2,7 @@ from __init__ import db
 
 
 class Delays_amount(db.Model):
+    __tablename__ = 'Delays_amount'
     id = db.Column(db.Integer, primary_key=True)
     lateAircraft = db.Column(db.Integer)
     carrier = db.Column(db.Integer)

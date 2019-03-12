@@ -2,6 +2,7 @@ from __init__ import db
 from sqlalchemy import Table, Column, Integer, ForeignKey
 
 class Delays(db.Model):
+    __tablename__ = 'Delays'
     id = db.Column(db.Integer, primary_key=True)
     minutesID = db.Column(db.Integer, ForeignKey("Delays_minutes.id"))
     amountID = db.Column(db.Integer, ForeignKey("Delays_amount.id"))

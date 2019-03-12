@@ -3,6 +3,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 
 
 class Flights(db.Model):
+    __tablename__ = 'Flights'
     id = db.Column(db.Integer, primary_key=True)
     cancelled = db.Column(db.Integer)
     onTime = db.Column(db.Integer)

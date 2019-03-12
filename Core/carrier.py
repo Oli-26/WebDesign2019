@@ -3,6 +3,7 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 
 
 class Carrier(db.Model):
+    __tablename__ = 'Carrier'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(10), unique=True)
     name = db.Column(db.String(120), unique=True)
