@@ -154,7 +154,7 @@ with open("airlines.json") as f:
             db.session.rollback()
         
         
-        if(minsId != -1 and amountId != -1):
+        if(minsId != None and amountId != None):
             try:
                 newDelayRelation = Delays(mID = minsId, aID = amountId)
                 db.session.add(newDelayRelation)
@@ -164,7 +164,7 @@ with open("airlines.json") as f:
                 db.session.rollback()
                 print("delay relation failed")
           
-        if(relationId != -1 and delayId != -1 and flightsId != -1):
+        if(relationId != None and delayId != None and flightsId != None):
             try:
                 newStatistics = Statistics(rID = relationId, fID = flightsId, dID = delayId)
                 db.session.add(newStatistics)
