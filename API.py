@@ -72,8 +72,48 @@ db.init_app(app)
 @app.route("/airports", methods=["GET"])  
 @app.route("/airports/<code>", methods=["GET"])  
 def getAirport(code = None):
+    """
+        Takes: airport code (str)
+        Query variables: content-type (str)
+        Returns:  (airportName (str), airportURI (str)) or list(airportName (str), airportURI (str))
+    """
+    
+    ## Load args ##
     contentType = request.args.get("content-type")
-    return "to be implemented"
+    ###############
+    
+    ## Logic     ##
+    if(code is None):
+        # return all airport URIs + airport names.
+        allAirports = Airport.query.all()
+        dataList = []
+        for a in allAirports:
+            dict = {
+                "name" : a.getName(),
+                "uri" : "/airports/" + a.getCode()
+            }
+            dataList.append(dict)
+        return json.dumps(dataList)
+    else:
+        # return all carrier URIs with airport + airport name
+        airport = Airport.query.filter_by(code = code).first()
+        if(not (airport is None)):
+            relations = Relation_table.query.filter_by(airportID = airport.id)
+            dataList = []
+
+            for r in relations:
+                carriers = Carrier.query.filter_by(id = r.getCarrierID())
+                for c in carriers:
+                    dataList.append("/carriers/" + c.getCode() + "?airport-code=" + code + "&content-type=" + str(contentType))
+                    
+            dict = {
+                "name" : airport.getName(),
+                "uri-list" : dataList
+            }
+            return json.dumps(dict)
+        else:
+            return "Code 400"
+
  
 
  
@@ -81,48 +121,145 @@ def getAirport(code = None):
 @app.route("/carriers", methods=["GET"])  
 @app.route("/carriers/<code>", methods=["GET"])  
 def getCarrier(code = None):
+    """
+        Takes: carrier code (str)
+        Query variables: airport-code (str), content-type (str)
+        Returns:  (carrierName (str), statisticsURI (str)) or list(carrierName (str), carrierURI (str))
+    """
+    
+    ## Load args ##
     airportCode = request.args.get("airport-code")
     contentType = request.args.get("content-type")
-    return "to be implemented"
+    ###############
+    
+    ## Logic     ##
+    if(code is None):
+        # return all carrier URIs + carrier names.
+        allCarriers = Carrier.query.all()
+        dataList = []
+        for c in allCarriers:
+            dict = {
+                "name" : c.getName(),
+                "uri" : "/carriers/" + c.getCode()
+            }
+            dataList.append(dict)
+        return json.dumps(dataList)
+    else:
+        # return specific statistics URI + carrier name.
+        carrier = Carrier.query.filter_by(code=code).first()
+        if(not (carrier is None)):
+            dict = {
+                "name" : carrier.getName(),
+                "uri" : "/carriers/" + carrier.getCode() + "/statistics"
+            }
+            return json.dumps(dict)
+        else:
+            return "Code 400"    
+
  
  
 @app.route("/carriers/<code>/statistics", methods=["GET"])
 def getStatistics(code = None):
+    """
+        Takes: carrier code (str)
+        Query variables: month (str), content-type (str)
+        Returns:  ?
+    """
+    
+    ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
+    airportCode = request.args.get("airport-code")
+    ###############
+    
+    
+    ## Logic     ##
+    if(code is None):
+        return "Code 400"
+    else:
+        carrier = Carrier.query.filter_by(code = code).first()
+        if(carrier is None):
+            return "Code 400"
+        else:
+            if(airportCode is None):
+                ## carrier -> relation -> statistics -> flights/(delays->minutes)/(delays->amount)
+                ## we will do this in a utility package (not in the main api.py)
+                return "sum of {{flights}, {minutes}, {amount}}"
+            else:
+                ## Same as above
+                return "{flights}, {minutes}, {amount}}"
     return "to be implemented"
     
     
 @app.route("/carriers/<code>/statistics/flights", methods=["GET"])  
 def getFlights(code = None):
+    """
+        Takes: carrier code (str)
+        Query variables: month (str), content-type (str)
+        Returns:  ?
+    """
+    
+    ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
+    
+    
+    ## Logic     ##
     return "to be implemented" 
 
     
 @app.route("/carriers/<code>/delays/minutes", methods=["GET"])  
 def getMinutes(code = None):
+    """
+        Takes: carrier code (str)
+        Query variables: month (str), content-type (str), delay (str)
+        Returns:  ?
+    """
+    
+    ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     delayType = request.args.get("delay")
+    ###############
+    
+    ## Logic     ##
     return "to be implemented" 
     
 @app.route("/carriers/<code>/delays/minutes/averages", methods=["GET"])  
-def getMinutes(code = None):
+def getMinutesAverage(code = None):
+    """
+        Takes: carrier code (str)
+        Query variables: month (str), content-type (str), delay (str), airport-code1 (str), airportcode2 (str)
+        Returns:  ?
+    """
+    
+    ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     delayType = request.args.get("delay")
     airportCode1 = request.args.get("airport-code1")
     airportCode2 = request.args.get("airport-code2")
+    ###############
+    
+    ## Logic     ##
     return "to be implemented" 
         
     
 @app.route("/carriers/<code>/delays/amount", methods=["GET"])  
-def getMinutes(code = None):
+def getAmount(code = None):
+    """
+        Takes: carrier code (str)
+        Query variables: month (str), content-type (str), delay (str)
+        Returns:  ?
+    """
+    
+    ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     delayType = request.args.get("delay")
+    ###############
 
+    ## Logic     ##
     return "to be implemented"     
     
     
