@@ -20,51 +20,7 @@ db.init_app(app)
 
 
 #db.create_all()
-#db.session.commit()
-
-
-
-
-
-#airports = Airport.query.all()
-#for a in airports:
-#    print(str(a.id) + "  |  " + a.getName() + "  |  " + a.getCode())
-
-
-
-#carriers = Carrier.query.all()
-#for c in carriers:
-#    db.session.delete(a);
-#    print(str(c.id) + "  |  " + c.getName() + "  |  " + c.getCode())
-#
-#times = Time.query.all()
-#for t in times:
-#    print(t.getLabel(t.getId()))
-   
-
-#relations = Relation_table.query.all()
-#j = 0
-#for r in relations:
-#    j = j + 1
-#    if(j > 100):
-#        break;
-#    print(str(r.getAirportID()) + " -- " + str(r.getCarrierID()) + " -- " + str(r.getTimeID()))
-
-        
-#print("statistics")
-#statistics = Statistics.query.all()
-#for s in statistics:
- #   print(str(s.relationID) + " -- " + str(s.flightID) + " -- " + str(s.delayID))
-
- 
- 
- 
- 
- 
- 
- 
- 
- 
+#db.session.commit() 
  
  
   
@@ -208,18 +164,20 @@ def getFlights(code = None):
         flask.abort(400, "400(invalid paramater): airport code invalid")
     else:
         if(airportCode is None):
-            return "todo (return all airports)"
+           
+            carrier = Carrier.query.filter_by(code = code).first()
+            if(carrier is None):
+                flask.abort(400, "400(invalid paramter): carrier code invalid")
+            dictionary = Utility.getFlightsByMonth(carrier = carrier, month = month)
+            return json.dumps(dictionary)
         else:
-            if(month is None):
-                return "todo (return all months)"
-            else:
-                carrier = Carrier.query.filter_by(code = code).first()
-                airport = Airport.query.filter_by(code = airportCode).first()
-                if(carrier is None or airport is None):
-                    flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
-                dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
-                if(not (dictionary is None)):
-                    return json.dumps(dictionary)
+   
+            carrier = Carrier.query.filter_by(code = code).first()
+            airport = Airport.query.filter_by(code = airportCode).first()
+            if(carrier is None or airport is None):
+                flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
+            dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
+            return json.dumps(dictionary)
 
 
 
@@ -244,16 +202,18 @@ def getMinutes(code = None):
         flask.abort(400, "400(invalid paramater): carrier code invalid")
     else:
         if(airportCode is None):
-            ## lots of effort: must get mins by month for every airport with this carrier
-            return "todo (return all airports)"
+                carrier = Carrier.query.filter_by(code = code).first()
+                
+                if(carrier is None):
+                    flask.abort(400, "400(invalid paramter): carrier code invalid")
+                dictionary = Utility.getMinutesByMonth(carrier = carrier, month = month)
+                if(not (dictionary is None)):
+                    return json.dumps(dictionary)
         else:
-            if(month is None):
-                return "todo (return all months)"
-            else:
                 carrier = Carrier.query.filter_by(code = code).first()
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
-                    return "Code 400"
+                    flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
                 dictionary = Utility.getMinutesByMonth(carrier = carrier, airport = airport, month = month)
                 if(not (dictionary is None)):
                     return json.dumps(dictionary)

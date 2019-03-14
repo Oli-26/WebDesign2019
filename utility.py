@@ -20,28 +20,49 @@ from Core.statistics import Statistics
 
 class Utility():
     
-    def getFlightsByMonth(airport, carrier, month):
+    def getFlightsByMonth(carrier, month, airport = None):
         cancelled = 0
         delayed = 0
         ontime = 0
         diverted = 0
         total = 0
-    
-        times = Time.query.filter_by(month = month).all()
+        if(airport is None):
+            if(month is None):
+                times = Time.query.all()
+            else:
+                times = Time.query.filter_by(month = month).all() 
+            
+            for t in times:
+                relations = Relation_table.query.filter_by(carrierID = carrier.id, timeID = t.id).all()
+                for r in relations:
+                    statistics = Statistics.query.filter_by(relationID = r.id).first()
+                    flights = Flights.query.filter_by(id = statistics.flightID).first()
+                    
+                    cancelled = cancelled + flights.getCancelled()
+                    ontime = ontime + flights.getOnTime()
+                    delayed = delayed + flights.getDelayed()
+                    diverted = diverted + flights.getDiverted()
+                    total = total + flights.getTotal()
+        else:
+            times = []
+            if(month is None):
+                times = Time.query.all()
+            else:
+                times = Time.query.filter_by(month = month).all()
 
-        for t in times:
-            relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = t.id).first()
-            if(not (relation is None)):
-                statistics = Statistics.query.filter_by(relationID = relation.id).first()
-                flights = Flights.query.filter_by(id = statistics.flightID).first()
+            for t in times:
+                relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = t.id).first()
+                if(not (relation is None)):
+                    statistics = Statistics.query.filter_by(relationID = relation.id).first()
+                    flights = Flights.query.filter_by(id = statistics.flightID).first()
+                    
+                    cancelled = cancelled + flights.getCancelled()
+                    ontime = ontime + flights.getOnTime()
+                    delayed = delayed + flights.getDelayed()
+                    diverted = diverted + flights.getDiverted()
+                    total = total + flights.getTotal()
                 
-                cancelled = cancelled + flights.getCancelled()
-                ontime = ontime + flights.getOnTime()
-                delayed = delayed + flights.getDelayed()
-                diverted = diverted + flights.getDiverted()
-                total = total + flights.getTotal()
-        
-        
+            
         dict = {
             "cancelled" : cancelled,
             "ontime" : ontime,
@@ -49,36 +70,64 @@ class Utility():
             "diverted" : diverted,
             "total" : total
         }
+        
+        if(month is None):
+            return {"month" : "all", "flights-data" : dict}
         return {"month" : Time.getMonthText(month), "flights-data" : dict}
-    
+        
      
-    def getMinutesByMonth(airport, carrier, month):
+    def getMinutesByMonth(carrier, month, airport = None):
         realCarrier = carrier  ## because carrier is a variable in minutes.
-        print(airport)
-        print(carrier)
+        
         lateAircraft = 0
         carrier = 0
         security = 0
         weather = 0
         nationalAviationSystem = 0
         total = 0
-
-        times = Time.query.filter_by(month = month).all()
-        for t in times:
-            #print(str(airport.id) + "  " + str(carrier.id) + "  ")
-            relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = realCarrier.id, timeID = t.id).first()
-            if(not (relation is None)):
-                statistics = Statistics.query.filter_by(relationID = relation.id).first()
-                delay = Delays.query.filter_by(id = statistics.delayID).first()
-                minutes = Delays_minutes.query.filter_by(id = delay.getMinutesID()).first()
-                
-                lateAircraft = lateAircraft + minutes.getLateAircraft()
-                carrier = carrier + minutes.getCarrier()
-                security = security + minutes.getSecurity()
-                weather = weather + minutes.getWeather()
-                nationalAviationSystem = nationalAviationSystem + minutes.getNationalAviationSystem()
-                total = total + minutes.getTotal()
         
+        
+        if(airport is None):
+            times = []
+            if(month is None):
+                times = Time.query.all()
+            else:
+                times = Time.query.filter_by(month = month).all()
+            for t in times:
+                #print(str(airport.id) + "  " + str(carrier.id) + "  ")
+                relations = Relation_table.query.filter_by(carrierID = realCarrier.id, timeID = t.id).all()
+                for r in relations:
+                    statistics = Statistics.query.filter_by(relationID = r.id).first()
+                    delay = Delays.query.filter_by(id = statistics.delayID).first()
+                    minutes = Delays_minutes.query.filter_by(id = delay.getMinutesID()).first()
+                    
+                    lateAircraft = lateAircraft + minutes.getLateAircraft()
+                    carrier = carrier + minutes.getCarrier()
+                    security = security + minutes.getSecurity()
+                    weather = weather + minutes.getWeather()
+                    nationalAviationSystem = nationalAviationSystem + minutes.getNationalAviationSystem()
+                    total = total + minutes.getTotal()
+        else:
+            times = []
+            if(month is None):
+                times = Time.query.all()
+            else:
+                times = Time.query.filter_by(month = month).all()
+            for t in times:
+                #print(str(airport.id) + "  " + str(carrier.id) + "  ")
+                relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = realCarrier.id, timeID = t.id).first()
+                if(not (relation is None)):
+                    statistics = Statistics.query.filter_by(relationID = relation.id).first()
+                    delay = Delays.query.filter_by(id = statistics.delayID).first()
+                    minutes = Delays_minutes.query.filter_by(id = delay.getMinutesID()).first()
+                    
+                    lateAircraft = lateAircraft + minutes.getLateAircraft()
+                    carrier = carrier + minutes.getCarrier()
+                    security = security + minutes.getSecurity()
+                    weather = weather + minutes.getWeather()
+                    nationalAviationSystem = nationalAviationSystem + minutes.getNationalAviationSystem()
+                    total = total + minutes.getTotal()
+            
         
         dict = {
             "late-aircraft" : lateAircraft,
@@ -88,4 +137,8 @@ class Utility():
             "nas" : nationalAviationSystem,
             "total" : total
         }
+        if(month is None):
+            return {"month" : "all", "flights-data" : dict}
         return {"month" : Time.getMonthText(month), "flights-data" : dict}
+        
+    
