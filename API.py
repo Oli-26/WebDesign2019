@@ -35,6 +35,8 @@ def getAirport(code = None):
     
     ## Load args ##
     contentType = request.args.get("content-type")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
     ###############
     
     ## Logic     ##
@@ -72,7 +74,7 @@ def getAirport(code = None):
  
 
  
-  
+  ############################# returning wrong
 @app.route("/carriers", methods=["GET"])  
 @app.route("/carriers/<code>", methods=["GET"])  
 def getCarrier(code = None):
@@ -85,19 +87,39 @@ def getCarrier(code = None):
     ## Load args ##
     airportCode = request.args.get("airport-code")
     contentType = request.args.get("content-type")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
     ###############
     
     ## Logic     ##
     if(code is None):
         # return all carrier URIs + carrier names.
-        allCarriers = Carrier.query.all()
         dataList = []
-        for c in allCarriers:
-            dict = {
-                "name" : c.getName(),
-                "uri" : "/carriers/" + c.getCode()
-            }
-            dataList.append(dict)
+        if(airportCode is None):
+            allCarriers = Carrier.query.all()
+   
+            for c in allCarriers:
+                dict = {
+                    "name" : c.getName(),
+                    "uri" : "/carriers/" + c.getCode()+"?content-type="+str(contentType)
+                }
+                dataList.append(dict)
+        else:
+            airport = Airport.query.filter_by(code = airportCode).first()
+            if(airport is None):
+                flask.abort(400, "400(invalid parameter): airport code invalid")
+            else:
+                relations = Relation_table.query.filter_by(airportID = airport.id).all()
+                for r in relations:
+                    carrier = Carrier.query.filter_by(id = r.getCarrierID()).first()
+                    dict = {
+                        "name" : carrier.getName(),
+                        "uri" : "/carriers/"+carrier.getCode()+"?content-type="+str(contentType)+"&airport-code="+airportCode
+                    }
+                    if(not (dict in dataList)):
+                        dataList.append(dict)
+                
+      
         return json.dumps(dataList)
     else:
         # return specific statistics URI + carrier name.
@@ -105,7 +127,7 @@ def getCarrier(code = None):
         if(not (carrier is None)):
             dict = {
                 "name" : carrier.getName(),
-                "uri" : "/carriers/" + carrier.getCode() + "/statistics"
+                "uri" : "/carriers/" + carrier.getCode() + "/statistics"+"?content-type="+str(contentType)+"&airport-code="+str(airportCode)
             }
             return json.dumps(dict)
         else:
@@ -137,12 +159,20 @@ def getStatistics(code = None):
             flask.abort(400, "400(invalid paramater): carrier code invalid")
         else:
             if(airportCode is None):
-                ## carrier -> relation -> statistics -> flights/(delays->minutes)/(delays->amount)
-                ## we will do this in a utility package (not in the main api.py)
-                return "sum of {{flights}, {minutes}, {amount}}"
+                dict = {
+                    "flights-uri" : "/carriers/"+code+"/statistics/flights?month="+str(month)+"&content-type="+str(contentType),
+                    "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes?month="+str(month)+"&content-type="+str(contentType),
+                    "amount-uri" : "/carriers/"+code+"/statistics/delays/amount?month="+str(month)+"&content-type="+str(contentType)
+                }
+                return json.dumps(dict)
             else:
                 ## Same as above
-                return "{flights}, {minutes}, {amount}}"
+                dict = {
+                    "flights-uri" : "/carriers/"+code+"/statistics/flights?month="+str(month)+"&airport-code="+airportCode+"&content-type="+str(contentType),
+                    "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes?month="+str(month)+"&airport-code="+airportCode+"&content-type="+str(contentType),
+                    "amount-uri" : "/carriers/"+code+"/statistics/delays/amount?month="+str(month)+"&airport-code="+airportCode+"&content-type="+str(contentType)      
+                }
+                return json.dumps(dict)
 
     
     
@@ -182,7 +212,7 @@ def getFlights(code = None):
 
 
     
-@app.route("/carriers/<code>/delays/minutes", methods=["GET"])  
+@app.route("/carriers/<code>/statistics/delays/minutes", methods=["GET"])  
 def getMinutes(code = None):
     """
         Takes: carrier code (str)
@@ -195,6 +225,8 @@ def getMinutes(code = None):
     contentType = request.args.get("content-type")
     delayType = request.args.get("delay")
     airportCode = request.args.get("airport-code")
+    if(airportCode == "None"):
+        airportCode = None
     ###############
     
      ## Logic     ##
@@ -207,19 +239,17 @@ def getMinutes(code = None):
                 if(carrier is None):
                     flask.abort(400, "400(invalid paramter): carrier code invalid")
                 dictionary = Utility.getMinutesByMonth(carrier = carrier, month = month)
-                if(not (dictionary is None)):
-                    return json.dumps(dictionary)
+                return json.dumps(dictionary)
         else:
                 carrier = Carrier.query.filter_by(code = code).first()
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
                 dictionary = Utility.getMinutesByMonth(carrier = carrier, airport = airport, month = month)
-                if(not (dictionary is None)):
-                    return json.dumps(dictionary)
+                return json.dumps(dictionary)
                 
     
-@app.route("/carriers/<code>/delays/minutes/averages", methods=["GET"])  
+@app.route("/carriers/<code>/statistics/delays/minutes/averages", methods=["GET"])  
 def getMinutesAverage(code = None):
     """
         Takes: carrier code (str)
@@ -239,7 +269,7 @@ def getMinutesAverage(code = None):
     return "to be implemented" 
         
     
-@app.route("/carriers/<code>/delays/amount", methods=["GET"])  
+@app.route("/carriers/<code>/statistics/delays/amount", methods=["GET"])  
 def getAmount(code = None):
     """
         Takes: carrier code (str)
@@ -251,10 +281,30 @@ def getAmount(code = None):
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     delayType = request.args.get("delay")
+    airportCode = request.args.get("airport-code") 
+    if(airportCode == "None"):
+        airportCode = None
     ###############
 
     ## Logic     ##
-    return "to be implemented"     
+    if(code is None):
+        flask.abort(400, "400(invalid paramater): carrier code invalid")
+    else:
+        if(airportCode is None):
+                carrier = Carrier.query.filter_by(code = code).first()
+                
+                if(carrier is None):
+                    flask.abort(400, "400(invalid paramter): carrier code invalid")
+                dictionary = Utility.getAmountByMonth(carrier = carrier, month = month)
+                return json.dumps(dictionary)
+        else:
+                carrier = Carrier.query.filter_by(code = code).first()
+                airport = Airport.query.filter_by(code = airportCode).first()
+                if(carrier is None or airport is None):
+                    flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
+                dictionary = Utility.getAmountByMonth(carrier = carrier, airport = airport, month = month)
+                return json.dumps(dictionary)
+                
     
     
     

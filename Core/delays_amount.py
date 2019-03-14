@@ -33,7 +33,7 @@ class Delays_amount(db.Model):
         return self.weather
 
     def getNationalAviationSystem(self):
-        return self.nationalAvaiationSystem
+        return self.nationalAviationSystem
 
     def setId(self, newID):
         self.id = newID
