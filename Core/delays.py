@@ -14,10 +14,10 @@ class Delays(db.Model):
     def getId(self):
         return self.id
 
-    def getMinutesID(self, id):
+    def getMinutesID(self):
         return self.minutesID
 
-    def getAmountID(self, id):
+    def getAmountID(self):
         return self.amountID
 
     def setId(self, newID):

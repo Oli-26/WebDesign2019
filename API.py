@@ -111,7 +111,7 @@ def getAirport(code = None):
             }
             return json.dumps(dict)
         else:
-            return "Code 400"
+            flask.abort(400, "400(invalid paramater): airport code invalid")
 
  
 
@@ -153,7 +153,7 @@ def getCarrier(code = None):
             }
             return json.dumps(dict)
         else:
-            return "Code 400"    
+            flask.abort(400, "400(invalid paramater): carrier code invalid")  
 
  
  
@@ -174,11 +174,11 @@ def getStatistics(code = None):
     
     ## Logic     ##
     if(code is None):
-        return "Code 400"
+        flask.abort(400, "400(invalid paramater): carrier code invalid(None)")
     else:
         carrier = Carrier.query.filter_by(code = code).first()
         if(carrier is None):
-            return "Code 400"
+            flask.abort(400, "400(invalid paramater): carrier code invalid")
         else:
             if(airportCode is None):
                 ## carrier -> relation -> statistics -> flights/(delays->minutes)/(delays->amount)
@@ -187,7 +187,7 @@ def getStatistics(code = None):
             else:
                 ## Same as above
                 return "{flights}, {minutes}, {amount}}"
-    return "to be implemented"
+
     
     
 @app.route("/carriers/<code>/statistics/flights", methods=["GET"])  
@@ -205,20 +205,22 @@ def getFlights(code = None):
     
     ## Logic     ##
     if(code is None):
-        return "Code 400"
+        flask.abort(400, "400(invalid paramater): airport code invalid")
     else:
         if(airportCode is None):
-            print("todo")
+            return "todo (return all airports)"
         else:
-            carrier = Carrier.query.filter_by(code = code).first()
-            airport = Airport.query.filter_by(code = airportCode).first()
-            if(carrier is None or airport is None):
-                return "Code 400"
-            dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
-            if(not (dictionary is None)):
-                return json.dumps(dictionary)
+            if(month is None):
+                return "todo (return all months)"
             else:
-                return "Code 400"
+                carrier = Carrier.query.filter_by(code = code).first()
+                airport = Airport.query.filter_by(code = airportCode).first()
+                if(carrier is None or airport is None):
+                    flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
+                dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
+                if(not (dictionary is None)):
+                    return json.dumps(dictionary)
+
 
 
     
@@ -234,10 +236,28 @@ def getMinutes(code = None):
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     delayType = request.args.get("delay")
+    airportCode = request.args.get("airport-code")
     ###############
     
-    ## Logic     ##
-    return "to be implemented" 
+     ## Logic     ##
+    if(code is None):
+        flask.abort(400, "400(invalid paramater): carrier code invalid")
+    else:
+        if(airportCode is None):
+            ## lots of effort: must get mins by month for every airport with this carrier
+            return "todo (return all airports)"
+        else:
+            if(month is None):
+                return "todo (return all months)"
+            else:
+                carrier = Carrier.query.filter_by(code = code).first()
+                airport = Airport.query.filter_by(code = airportCode).first()
+                if(carrier is None or airport is None):
+                    return "Code 400"
+                dictionary = Utility.getMinutesByMonth(carrier = carrier, airport = airport, month = month)
+                if(not (dictionary is None)):
+                    return json.dumps(dictionary)
+                
     
 @app.route("/carriers/<code>/delays/minutes/averages", methods=["GET"])  
 def getMinutesAverage(code = None):

@@ -35,7 +35,7 @@ class Delays_minutes(db.Model):
         return self.weather
 
     def getNationalAviationSystem(self):
-        return self.nationalAvaiationSystem
+        return self.nationalAviationSystem
 
     def getTotal(self):
         return self.total
