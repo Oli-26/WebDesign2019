@@ -4,8 +4,7 @@ import flask
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from __init__ import app, db
-
-
+from utility import Utility
 ## INIT and UPDATE core objects
 
 from Core.airport import Airport
@@ -202,10 +201,25 @@ def getFlights(code = None):
     ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
-    
+    airportCode = request.args.get("airport-code")
     
     ## Logic     ##
-    return "to be implemented" 
+    if(code is None):
+        return "Code 400"
+    else:
+        if(airportCode is None):
+            print("todo")
+        else:
+            carrier = Carrier.query.filter_by(code = code).first()
+            airport = Airport.query.filter_by(code = airportCode).first()
+            if(carrier is None or airport is None):
+                return "Code 400"
+            dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
+            if(not (dictionary is None)):
+                return json.dumps(dictionary)
+            else:
+                return "Code 400"
+
 
     
 @app.route("/carriers/<code>/delays/minutes", methods=["GET"])  

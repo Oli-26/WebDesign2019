@@ -30,3 +30,31 @@ class Time(db.Model):
 
     def setYear(self, y):
         self.year = y
+        
+    def getMonthText(num):
+        num = int(num)
+        if(num == 1):
+            return "january"
+        if(num == 2):
+            return "febuary"
+        if(num == 3):
+            return "march"
+        if(num == 4):
+            return "april"
+        if(num == 5):
+            return "may"
+        if(num == 6):
+            return "june"
+        if(num == 7):
+            return "july"
+        if(num == 8):
+            return "august"
+        if(num == 9):
+            return "september"    
+        if(num == 10):
+            return "october"
+        if(num == 11):
+            return "november"
+        if(num == 12):
+            return "december"
+        return "not-a-month"

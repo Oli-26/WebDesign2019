@@ -22,7 +22,7 @@ class Flights(db.Model):
         return self.cancelled
 
     def getOnTime(self):
-        return self.on_time
+        return self.onTime
 
     def getDelayed(self):
         return self.delayed
@@ -37,7 +37,7 @@ class Flights(db.Model):
         self.cancelled = new_cancelled
 
     def setOnTime(self, new_on_time):
-        self.on_time = new_on_time
+        self.onTime = new_on_time
 
     def setName(self, new_delayed):
         self.delayed = new_delayed
