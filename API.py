@@ -3,10 +3,10 @@ import json
 import flask
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
+
+## INIT and UPDATE core objects
 from __init__ import app, db
 from utility import Utility
-## INIT and UPDATE core objects
-
 from Core.airport import Airport
 from Core.time import Time 
 from Core.carrier import Carrier
@@ -16,14 +16,15 @@ from Core.delays_amount import Delays_amount
 from Core.delays import Delays
 from Core.relation_table import Relation_table
 from Core.statistics import Statistics
-db.init_app(app)
+
+db.init_app(app)    
 
 
-#db.create_all()
-#db.session.commit() 
+
  
  
-  
+
+
 @app.route("/airports", methods=["GET"])  
 @app.route("/airports/<code>", methods=["GET"])  
 def getAirport(code = None):
@@ -307,9 +308,7 @@ def getAmount(code = None):
                 
     
     
-    
-    
-app.run(port='5002', ssl_context='adhoc')  
+
 
 
 

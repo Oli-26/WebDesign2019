@@ -39,8 +39,8 @@ with open("airlines.json") as f:
         
         #print("looping(" + str(round(1000*i/dataLength)/10) +"%)")
         i = i + 1
-        if(i % 500 == 0):
-            print(str(round(1000*i/dataLength/10) + "%"))
+        if(i % 50 == 0):
+            print(str(round(1000*i/dataLength/10)) + "%")
          #   break
         try:
             instance = Airport.query.filter_by(name=index["airport"]["name"]).first()
