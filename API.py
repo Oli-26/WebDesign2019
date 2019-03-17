@@ -35,9 +35,12 @@ def getAirport(code = None):
     """
     
     ## Load args ##
+    month = request.args.get("month")
     contentType = request.args.get("content-type")
+    airportCode = request.args.get("airport-code")
     if(contentType == "None" or contentType is None):
         contentType = "application/json"
+    queryString =  "?content-type=" + str(contentType) + "&month=" + str(month) 
     ###############
     
     ## Logic     ##
@@ -48,7 +51,7 @@ def getAirport(code = None):
         for a in allAirports:
             dict = {
                 "name" : a.getName(),
-                "uri" : "/airports/" + a.getCode()
+                "uri" : "/airports/" + a.getCode() + queryString
             }
             dataList.append(dict)
         return json.dumps(dataList)
@@ -56,13 +59,14 @@ def getAirport(code = None):
         # return all carrier URIs with airport + airport name
         airport = Airport.query.filter_by(code = code).first()
         if(not (airport is None)):
+            queryString =  "?airport-code=" + str(airport.getCode()) + "&content-type=" + str(contentType) + "&month=" + str(month) 
             relations = Relation_table.query.filter_by(airportID = airport.id)
             dataList = []
 
             for r in relations:
                 carriers = Carrier.query.filter_by(id = r.getCarrierID())
                 for c in carriers:
-                    dataList.append("/carriers/" + c.getCode() + "?airport-code=" + code + "&content-type=" + str(contentType))
+                    dataList.append("/carriers/" + c.getCode() + queryString)
                     
             dict = {
                 "name" : airport.getName(),
@@ -86,10 +90,14 @@ def getCarrier(code = None):
     """
     
     ## Load args ##
-    airportCode = request.args.get("airport-code")
+    month = request.args.get("month")
     contentType = request.args.get("content-type")
+    airportCode = request.args.get("airport-code")
     if(contentType == "None" or contentType is None):
         contentType = "application/json"
+    queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month=" + str(month)  
+    
+    print("queryString = " + queryString)
     ###############
     
     ## Logic     ##
@@ -115,7 +123,7 @@ def getCarrier(code = None):
                     carrier = Carrier.query.filter_by(id = r.getCarrierID()).first()
                     dict = {
                         "name" : carrier.getName(),
-                        "uri" : "/carriers/"+carrier.getCode()+"?content-type="+str(contentType)+"&airport-code="+airportCode
+                        "uri" : "/carriers/"+carrier.getCode()+queryString
                     }
                     if(not (dict in dataList)):
                         dataList.append(dict)
@@ -126,9 +134,20 @@ def getCarrier(code = None):
         # return specific statistics URI + carrier name.
         carrier = Carrier.query.filter_by(code=code).first()
         if(not (carrier is None)):
+            relations = Relation_table.query.filter_by(carrierID = carrier.id).all()
+            airportURIs = []
+            for r in relations:
+                airport = Airport.query.filter_by(id = r.getAirportID()).first()
+                queryString2 =  "?content-type=" + str(contentType) + "&month=" + str(month)  
+                uri = "/airports/" + str(airport.getCode()) + queryString2
+                if(not uri in airportURIs):
+                    airportURIs.append(uri)
+                
             dict = {
                 "name" : carrier.getName(),
-                "uri" : "/carriers/" + carrier.getCode() + "/statistics"+"?content-type="+str(contentType)+"&airport-code="+str(airportCode)
+                
+                "uri" : "/carriers/" + carrier.getCode() + "/statistics"+queryString,
+                "airport-uris" : airportURIs
             }
             return json.dumps(dict)
         else:
@@ -148,6 +167,12 @@ def getStatistics(code = None):
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     airportCode = request.args.get("airport-code")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
+        
+    print(str(month))    
+    queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month=" + str(month) 
+    print("querys string = " + queryString)
     ###############
     
     
@@ -161,17 +186,17 @@ def getStatistics(code = None):
         else:
             if(airportCode is None):
                 dict = {
-                    "flights-uri" : "/carriers/"+code+"/statistics/flights?month="+str(month)+"&content-type="+str(contentType),
-                    "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes?month="+str(month)+"&content-type="+str(contentType),
-                    "amount-uri" : "/carriers/"+code+"/statistics/delays/amount?month="+str(month)+"&content-type="+str(contentType)
+                    "flights-uri" : "/carriers/"+code+"/statistics/flights" + queryString,
+                    "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes" + queryString,
+                    "amount-uri" : "/carriers/"+code+"/statistics/delays/amount" + queryString
                 }
                 return json.dumps(dict)
             else:
                 ## Same as above
                 dict = {
-                    "flights-uri" : "/carriers/"+code+"/statistics/flights?month="+str(month)+"&airport-code="+airportCode+"&content-type="+str(contentType),
-                    "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes?month="+str(month)+"&airport-code="+airportCode+"&content-type="+str(contentType),
-                    "amount-uri" : "/carriers/"+code+"/statistics/delays/amount?month="+str(month)+"&airport-code="+airportCode+"&content-type="+str(contentType)      
+                    "flights-uri" : "/carriers/"+code+"/statistics/flights" + queryString,
+                    "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes" + queryString,
+                    "amount-uri" : "/carriers/"+code+"/statistics/delays/amount" + queryString    
                 }
                 return json.dumps(dict)
 
@@ -189,6 +214,9 @@ def getFlights(code = None):
     month = request.args.get("month")
     contentType = request.args.get("content-type")
     airportCode = request.args.get("airport-code")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
+    queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month=" + str(month) 
     
     ## Logic     ##
     if(code is None):
@@ -208,6 +236,7 @@ def getFlights(code = None):
             if(carrier is None or airport is None):
                 flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
             dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
+            dictionary["carrier_uri"] = "/carriers/"+code+queryString
             return json.dumps(dictionary)
 
 
@@ -224,8 +253,13 @@ def getMinutes(code = None):
     ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
-    delayType = request.args.get("delay")
     airportCode = request.args.get("airport-code")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
+    queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month="  + str(month) 
+    
+    # Extra args functionality
+    delayType = request.args.get("delay")
     if(airportCode == "None"):
         airportCode = None
     ###############
@@ -247,6 +281,7 @@ def getMinutes(code = None):
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
                 dictionary = Utility.getMinutesByMonth(carrier = carrier, airport = airport, month = month)
+                dictionary["carrier_uri"] = "/carriers/"+code+queryString
                 return json.dumps(dictionary)
                 
     
@@ -281,8 +316,13 @@ def getAmount(code = None):
     ## Load args ##
     month = request.args.get("month")
     contentType = request.args.get("content-type")
+    airportCode = request.args.get("airport-code")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
+    queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month="  + str(month) 
+    
+    # Extra args functionality
     delayType = request.args.get("delay")
-    airportCode = request.args.get("airport-code") 
     if(airportCode == "None"):
         airportCode = None
     ###############
@@ -304,6 +344,7 @@ def getAmount(code = None):
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
                 dictionary = Utility.getAmountByMonth(carrier = carrier, airport = airport, month = month)
+                dictionary["carrier_uri"] = "/carriers/"+code+queryString
                 return json.dumps(dictionary)
                 
     
