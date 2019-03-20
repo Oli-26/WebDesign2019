@@ -96,8 +96,6 @@ def getCarrier(code = None):
     if(contentType == "None" or contentType is None):
         contentType = "application/json"
     queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month=" + str(month)  
-    
-    print("queryString = " + queryString)
     ###############
     
     ## Logic     ##
@@ -172,7 +170,6 @@ def getStatistics(code = None):
         
     print(str(month))    
     queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month=" + str(month) 
-    print("querys string = " + queryString)
     ###############
     
     
