@@ -48,3 +48,26 @@ class CSVHandler():
             for data in dataList:
                 returnString = returnString + data["name"] + "," + data["uri"] + "\n"
         return returnString
+        
+    def getStatisticsCSV(dictionary):
+        returnString = dictionary["flights-uri"] + ", " + dictionary["minutes-uri"] + ", " + dictionary["amount-uri"]
+        return returnString
+     
+    def getMinutesCSV(dictionary):
+        returnString = dictionary["month"] + ","
+        returnString = returnString + str(dictionary["minutes-data"]["late-aircraft"]) + "," +  str(dictionary["minutes-data"]["carrier"]) + "," +  str(dictionary["minutes-data"]["security"]) + "," +  str(dictionary["minutes-data"]["weather"]) + "," +  str(dictionary["minutes-data"]["nas"]) + "," +  str(dictionary["minutes-data"]["total"])
+        returnString = returnString + "\n" + dictionary["carrier-uri"]
+        return returnString
+        
+         
+    def getAmountCSV(dictionary):
+        returnString = dictionary["month"] + ","
+        returnString = returnString + str(dictionary["amount-data"]["late-aircraft"]) + "," +  str(dictionary["amount-data"]["carrier"]) + "," +  str(dictionary["amount-data"]["security"]) + "," +  str(dictionary["amount-data"]["weather"]) + "," +  str(dictionary["amount-data"]["nas"]) 
+        returnString = returnString + "\n" + dictionary["carrier-uri"]
+        return returnString    
+     
+    def getFlightsCSV(dictionary):
+        returnString = dictionary["month"] + ","
+        returnString = returnString + str(dictionary["flights-data"]["cancelled"]) + "," +  str(dictionary["flights-data"]["ontime"]) + "," +  str(dictionary["flights-data"]["delayed"]) + "," +  str(dictionary["flights-data"]["diverted"]) + "," +  str(dictionary["flights-data"]["total"]) 
+        returnString = returnString + "\n" + dictionary["carrier-uri"]
+        return returnString  

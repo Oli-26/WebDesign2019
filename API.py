@@ -165,9 +165,7 @@ def getCarrier(code = None):
         else:
             flask.abort(400, "400(invalid paramater): carrier code invalid")  
 
-    print(str(contentType))
     if(contentType == "text/csv"):
-        print("here!")
         if(code is None):
             return CSVHandler.getCarrierCSV(dataList = dataList)
         else:
@@ -214,7 +212,7 @@ def getStatistics(code = None):
                     "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes" + queryString,
                     "amount-uri" : "/carriers/"+code+"/statistics/delays/amount" + queryString
                 }
-                return json.dumps(dict)
+                
             else:
                 ## Same as above
                 dict = {
@@ -222,7 +220,11 @@ def getStatistics(code = None):
                     "minutes-uri" : "/carriers/"+code+"/statistics/delays/minutes" + queryString,
                     "amount-uri" : "/carriers/"+code+"/statistics/delays/amount" + queryString    
                 }
-                return json.dumps(dict)
+    if(contentType == "text/csv"):
+        return CSVHandler.getStatisticsCSV(dictionary = dict)
+       
+    else: 
+        return json.dumps(dict)            
 
 @app.route("/carriers/<code>/statistics", methods=["PUT"])
 def setStatistics(code = None):
@@ -503,6 +505,7 @@ def getFlights(code = None):
             if(carrier is None):
                 flask.abort(400, "400(invalid paramter): carrier code invalid")
             dictionary = Utility.getFlightsByMonth(carrier = carrier, month = month)
+            dictionary["carrier-uri"] = "/carriers/"+code+queryString
             return json.dumps(dictionary)
         else:
    
@@ -511,7 +514,7 @@ def getFlights(code = None):
             if(carrier is None or airport is None):
                 flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
             dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
-            dictionary["carrier_uri"] = "/carriers/"+code+queryString
+            dictionary["carrier-uri"] = "/carriers/"+code+queryString
             return json.dumps(dictionary)
 
 
@@ -549,17 +552,23 @@ def getMinutes(code = None):
                 if(carrier is None):
                     flask.abort(400, "400(invalid paramter): carrier code invalid")
                 dictionary = Utility.getMinutesByMonth(carrier = carrier, month = month)
-                return json.dumps(dictionary)
+                dictionary["carrier-uri"] = "/carriers/"+code+queryString
+                
         else:
                 carrier = Carrier.query.filter_by(code = code).first()
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
                 dictionary = Utility.getMinutesByMonth(carrier = carrier, airport = airport, month = month)
-                dictionary["carrier_uri"] = "/carriers/"+code+queryString
-                return json.dumps(dictionary)
+                dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 
-    
+                
+    if(contentType == "text/csv"):
+        return CSVHandler.getMinutesCSV(dictionary)
+    else:
+        return json.dumps(dictionary)
+        
+        
 @app.route("/carriers/<code>/statistics/delays/minutes/averages", methods=["GET"])  
 def getMinutesAverage(code = None):
     """
@@ -595,7 +604,7 @@ def getMinutesAverage(code = None):
     finalDictionary = {
         "mean" : dict,
         "standard-deviation" : standardDeviationDictionary,
-        "carrier_uri" : "/carriers/"+code+queryString
+        "carrier-uri" : "/carriers/"+code+queryString
     
     
     }
@@ -635,17 +644,21 @@ def getAmount(code = None):
                 if(carrier is None):
                     flask.abort(400, "400(invalid paramter): carrier code invalid")
                 dictionary = Utility.getAmountByMonth(carrier = carrier, month = month)
-                return json.dumps(dictionary)
+                dictionary["carrier-uri"] = "/carriers/"+code+queryString
+                #return json.dumps(dictionary)
         else:
                 carrier = Carrier.query.filter_by(code = code).first()
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
                 dictionary = Utility.getAmountByMonth(carrier = carrier, airport = airport, month = month)
-                dictionary["carrier_uri"] = "/carriers/"+code+queryString
-                return json.dumps(dictionary)
+                dictionary["carrier-uri"] = "/carriers/"+code+queryString
+                #return json.dumps(dictionary)
                 
-    
+    if(contentType == "text/csv"):
+        return CSVHandler.getAmountCSV(dictionary)
+    else:
+        return json.dumps(dictionary)
     
 
 

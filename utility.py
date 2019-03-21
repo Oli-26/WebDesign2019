@@ -141,8 +141,8 @@ class Utility():
             "total" : total
         }
         if(month is None):
-            return {"month" : "all", "flights-data" : dict}
-        return {"month" : Time.getMonthText(month), "flights-data" : dict}
+            return {"month" : "all", "minutes-data" : dict}
+        return {"month" : Time.getMonthText(month), "minutes-data" : dict}
         
     def getAmountByMonth(carrier, month, airport = None):
         realCarrier = carrier  ## because carrier is a variable in minutes.
@@ -206,8 +206,8 @@ class Utility():
             "nas" : nationalAviationSystem
         }
         if(month is None):
-            return {"month" : "all", "flights-data" : dict}
-        return {"month" : Time.getMonthText(month), "flights-data" : dict}
+            return {"month" : "all", "amount-data" : dict}
+        return {"month" : Time.getMonthText(month), "amount-data" : dict}
         
         
     def getMean(airport1, airport2, carrier, month):
