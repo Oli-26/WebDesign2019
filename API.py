@@ -197,8 +197,86 @@ def getStatistics(code = None):
                 }
                 return json.dumps(dict)
 
+@app.route("/carriers/<code>/statistics", methods=["POST"])
+def setStatistics(code = None):
+    """
+        Takes: carrier code(str)
+        form variables: 
+        Query variables: month (int), airport-code (str), content-type (str), year (int)
+    """
     
     
+    minutesFlag = 1
+    amountFlag = 1
+    flightsFlag = 1
+    ## Load form ##
+    try:
+        minutesLateAircraft = request.form['minutes-late-aircraft']
+        minutesLateCarrier = request.form['minutes-late-carrier']
+        minutesLateSecurity = request.form['minutes-late-security']
+        minutesLateWeather = request.form['minutes-late-weather']
+        minutesLateNAS  = request.form['minutes-late-nas']
+        minutesLateTotal = request.form['minutes-late-total']
+    except:
+        minutesFlag = 0
+        
+    try:    
+        amountLateAircraft = request.form['amount-late-aircraft'] 
+        amountLateCarrier = request.form['amount-late-carrier']
+        amountLateSecurity = request.form['amount-late-security']
+        amountLateWeather = request.form['amount-late-weather']
+        amountLateNAS = request.form['amount-late-nas']
+    except:
+        amountFlag = 0
+        
+    try:    
+        flightsCancelled = request.form['flights-cancelled']
+        flightsOnTime = request.form['flights-on-time']
+        flightsDelayed = request.form['flights-delayed']
+        flightsDiverted = request.form['flights-diverted']
+        flightsTotal = request.form['flights-total']
+    except:
+        flightsFlag = 0
+        
+        
+    ## Load args ##
+    month = request.args.get("month")
+    contentType = request.args.get("content-type")
+    airportCode = request.args.get("airport-code")
+    year = request.args.get("year")
+    if(contentType == "None" or contentType is None):
+        contentType = "application/json"
+    queryString =  "?airport-code=" + str(airportCode) + "&content-type=" + str(contentType) + "&month=" + str(month) 
+    
+    
+    airport = Airport.query.filter_by(code = airportCode).first()
+    time = Time.query.filter_by(month = month, year = year).first()
+    carrier = Carrier.query.filter_by(code = code).first()
+
+    if(airport is None):
+        flask.abort(400, "400(invalid paramater): airport code invalid")
+    if(time is None):
+        flask.abort(400, "400(invalid paramater): time is invalid")
+    if(carrier is None):
+        flask.abort(400, "400(invalid paramater): carrier code invalid")
+    
+    
+    relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = time.id).first()
+    if(relation is None):
+        flask.abort(400, "Something went wrong, no relation found with input values.")
+    
+    statistics = Statistics.query.filter_by(relationID = relation.id).first()
+    flights = Flights.query.filter_by(id = statistics.getFlightID()).first()
+    
+    delays = Delays.query.filter_by(id = statistics.getDelayID()).first()
+    minutes = Delays_minutes.query.filter_by(id = delays.getMinutesID()).first()
+    amount = Delays_amount.query.filter_by(id = delays.getAmountID()).first()
+    
+    
+    
+    
+    return "sucess"
+        
 @app.route("/carriers/<code>/statistics/flights", methods=["GET"])  
 def getFlights(code = None):
     """
@@ -244,7 +322,7 @@ def getMinutes(code = None):
     """
         Takes: carrier code (str)
         Query variables: month (str), content-type (str), delay (str)
-        Returns:  ?
+        Returns:  Dictionary of minutes + month + carrier URI.
     """
     
     ## Load args ##
@@ -307,7 +385,7 @@ def getAmount(code = None):
     """
         Takes: carrier code (str)
         Query variables: month (str), content-type (str), delay (str)
-        Returns:  ?
+        Returns:  Dictionary of amount + month + carrier uri
     """
     
     ## Load args ##

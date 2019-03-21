@@ -16,13 +16,13 @@ class Statistics(db.Model):
     def getId(self):
         return self.id
 
-    def getRelationID(self, id):
+    def getRelationID(self):
         return self.relationID
 
-    def getFlightID(self, id):
+    def getFlightID(self):
         return self.flightID
 
-    def getDelayID(self, id):
+    def getDelayID(self):
         return self.delayID
     
     def setId(self, newID):
