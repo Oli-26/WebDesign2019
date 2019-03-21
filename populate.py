@@ -5,10 +5,6 @@ from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from __init__ import app, db
 
-db.init_app(app)
-
-
-
 from Core.airport import Airport
 from Core.time import Time 
 from Core.carrier import Carrier
@@ -19,7 +15,7 @@ from Core.delays import Delays
 from Core.relation_table import Relation_table
 from Core.statistics import Statistics
 
-
+db.init_app(app)
 
 db.create_all()
 db.session.commit()
@@ -39,12 +35,12 @@ with open("airlines.json") as f:
         
         #print("looping(" + str(round(1000*i/dataLength)/10) +"%)")
         i = i + 1
-        if(i % 50 == 0):
+        if i % 50 == 0:
             print(str(round(1000*i/dataLength/10)) + "%")
          #   break
         try:
             instance = Airport.query.filter_by(name=index["airport"]["name"]).first()
-            if(instance != None):
+            if instance is not None:
                 airportId = instance.id
                 #print("Loaded airport with id " + str(airportId))
             else:
@@ -58,26 +54,27 @@ with open("airlines.json") as f:
         except:
             print("airport add failed")
             db.session.rollback()
-        
+
         try:
-            instance = Carrier.query.filter_by(name=index["carrier"]["name"]).first()
-            if(instance != None):
+            instance = Carrier.query.filter_by(code=(index["carrier"]["code"]), name=(index["carrier"]["name"])).first()
+            if instance is not None:
                 carrierId = instance.id
-                #print("Loaded carrier with id " + str(carrierId))
+                # print("Loaded carrier with id " + str(carrierId))
             else:
-                newCarrier = Carrier(c = index["carrier"]["code"], n = index["carrier"]["name"])
+                newCarrier = Carrier(c=index["carrier"]["code"], n=index["carrier"]["name"])
                 db.session.add(newCarrier)
-                
                 db.session.commit()
                 carrierId = newCarrier.id
-                #print("Added carrier with id " + str(carrierId))
+                # print("newCarrier code: " + newCarrier.code + "     name: " + newCarrier.name)
+                # print("Added carrier with id " + str(carrierId))
         except:
             print("Adding new carrier failed! " + index["carrier"]["code"])
             db.session.rollback()
                 #session.query(User).filter(User.name == 'fred')
+
         try:        
             instance = Time.query.filter_by(month = index["time"]["month"], year = index["time"]["year"]).first()
-            if(instance != None):
+            if instance is not None:
                 timeId = instance.id
                 #print("Loaded time with id " + str(timeId))
                 #print("Skipping!")
@@ -93,7 +90,7 @@ with open("airlines.json") as f:
             print("adding time failed")
             db.session.rollback()
         
-        if(airportId != None and carrierId != None and timeId != None):
+        if airportId is not None and carrierId is not None and timeId is not None:
                 # Add relation
             try:
                 #print("relation found!" + str(airportId) + "   " + str(carrierId) + "     " + str(timeId))
@@ -153,8 +150,7 @@ with open("airlines.json") as f:
             print("amount delayed add failed")
             db.session.rollback()
         
-        
-        if(minsId != None and amountId != None):
+        if minsId is not None and amountId is not None:
             try:
                 newDelayRelation = Delays(mID = minsId, aID = amountId)
                 db.session.add(newDelayRelation)
@@ -164,7 +160,7 @@ with open("airlines.json") as f:
                 db.session.rollback()
                 print("delay relation failed")
           
-        if(relationId != None and delayId != None and flightsId != None):
+        if relationId is not None and delayId is not None and flightsId is not None:
             try:
                 newStatistics = Statistics(rID = relationId, fID = flightsId, dID = delayId)
                 db.session.add(newStatistics)
