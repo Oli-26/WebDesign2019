@@ -506,7 +506,7 @@ def getFlights(code = None):
                 flask.abort(400, "400(invalid paramter): carrier code invalid")
             dictionary = Utility.getFlightsByMonth(carrier = carrier, month = month)
             dictionary["carrier-uri"] = "/carriers/"+code+queryString
-            return json.dumps(dictionary)
+            
         else:
    
             carrier = Carrier.query.filter_by(code = code).first()
@@ -515,8 +515,13 @@ def getFlights(code = None):
                 flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
             dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
             dictionary["carrier-uri"] = "/carriers/"+code+queryString
-            return json.dumps(dictionary)
-
+           
+                
+    if(contentType == "text/csv"):
+        return CSVHandler.getFlightsCSV(dictionary)
+    else:
+        return json.dumps(dictionary)
+        
 
 
     
