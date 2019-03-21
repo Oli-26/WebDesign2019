@@ -199,12 +199,13 @@ def getStatistics(code = None):
 
 @app.route("/carriers/<code>/statistics", methods=["POST"])
 def setStatistics(code = None):
+
     """
         Takes: carrier code(str)
-        form variables: 
+        form variables: (minutes-late-aircraft, minutes-late-carrier, minutes-late-security, minutes-late-weather, minutes-late-nas, minutes-late-total) + (amount-late-aircraft, amount-late-carrier, amount-late-security, amount-late-weather, amount-late-nas) + (flights-cancelled, flights-on-time, flights-delayed, flights-diverted, flights-total)
         Query variables: month (int), airport-code (str), content-type (str), year (int)
     """
-    
+    from sqlalchemy import update
     
     minutesFlag = 1
     amountFlag = 1
@@ -272,9 +273,37 @@ def setStatistics(code = None):
     minutes = Delays_minutes.query.filter_by(id = delays.getMinutesID()).first()
     amount = Delays_amount.query.filter_by(id = delays.getAmountID()).first()
     
-    
-    
-    
+    if(minutesFlag == 1):
+        try:
+            minutes.lateAircraft = minutesLateAircraft
+            minutes.carrier = minutesLateCarrier
+            minutes.security = minutesLateSecurity
+            minutes.weather = minutesLateWeather
+            minutes.nationalAviationSystem = minutesLateNAS
+            minutes.total = minutesLateTotal
+            db.session.commit()
+        except:
+            flask.abort(500, "Updating minutes failed")
+    if(amountFlag == 1):
+        try:
+            amount.lateAircraft = amountLateAircraft
+            amount.carrier = amountLateCarrier
+            amount.security = amountLateSecurity
+            amount.weather = amountLateWeather
+            amount.nationalAviationSystem = amountLateNAS
+            db.session.commit()
+        except:
+            flask.abort(500, "Updating amount failed")
+    if(flightsFlag == 1):
+        try:
+            flights.cancelled = flightsCancelled
+            flights.onTIme = flightsOnTime
+            flights.delayed = flightsDelayed
+            flights.diverted = flightsDiverted
+            flights.total = flightsTotal
+            db.session.commit()
+        except:
+            flask.abort(500, "Updating flights failed")
     return "sucess"
         
 @app.route("/carriers/<code>/statistics/flights", methods=["GET"])  
