@@ -7,6 +7,7 @@ from flask_restful import Resource, Api
 ## INIT and UPDATE core objects
 from __init__ import app, db
 from utility import Utility
+from CSVHandler import CSVHandler
 from Core.airport import Airport
 from Core.time import Time 
 from Core.carrier import Carrier
@@ -54,7 +55,8 @@ def getAirport(code = None):
                 "uri" : "/airports/" + a.getCode() + queryString
             }
             dataList.append(dict)
-        return json.dumps(dataList)
+            
+        
     else:
         # return all carrier URIs with airport + airport name
         airport = Airport.query.filter_by(code = code).first()
@@ -74,14 +76,24 @@ def getAirport(code = None):
                 "name" : airport.getName(),
                 "uri-list" : dataList
             }
-            return json.dumps(dict)
+            
         else:
             flask.abort(400, "400(invalid paramater): airport code invalid")
 
- 
+    if(contentType == "text/csv"):
+        if(code is None):
+            return CSVHandler.getAirportCSV(dataList = dataList)
+        else:
+            return CSVHandler.getAirportCSV(dictionary = dict)
+       
+    else:
+        if(code is None):
+            return json.dumps(dataList)
+        else:
+            return json.dumps(dict)
+            
+            
 
- 
-  ############################# returning wrong
 @app.route("/carriers", methods=["GET"])  
 @app.route("/carriers/<code>", methods=["GET"])  
 def getCarrier(code = None):
@@ -129,7 +141,7 @@ def getCarrier(code = None):
                         dataList.append(dict)
                 
       
-        return json.dumps(dataList)
+        
     else:
         # return specific statistics URI + carrier name.
         carrier = Carrier.query.filter_by(code=code).first()
@@ -149,17 +161,30 @@ def getCarrier(code = None):
                 "statistics-uri" : "/carriers/" + carrier.getCode() + "/statistics"+queryString,
                 "airport-uris" : airportURIs
             }
-            return json.dumps(dict)
+            
         else:
             flask.abort(400, "400(invalid paramater): carrier code invalid")  
 
+    print(str(contentType))
+    if(contentType == "text/csv"):
+        print("here!")
+        if(code is None):
+            return CSVHandler.getCarrierCSV(dataList = dataList)
+        else:
+            return CSVHandler.getCarrierCSV(dictionary = dict)
+       
+    else:
+        if(code is None):
+            return json.dumps(dataList)
+        else:
+            return json.dumps(dict)
  
  
 @app.route("/carriers/<code>/statistics", methods=["GET"])
 def getStatistics(code = None):
     """
         Takes: carrier code (str)
-        Query variables: month (str), content-type (str)
+        Query variables: month (str), content-type (str), airportCode (str)
         Returns:  flights-uri, minutes-uri, amount-uri
     """
     
@@ -569,7 +594,8 @@ def getMinutesAverage(code = None):
     
     finalDictionary = {
         "mean" : dict,
-        "standard-deviation" : standardDeviationDictionary
+        "standard-deviation" : standardDeviationDictionary,
+        "carrier_uri" : "/carriers/"+code+queryString
     
     
     }
