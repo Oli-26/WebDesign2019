@@ -563,10 +563,18 @@ def getMinutesAverage(code = None):
         flask.abort(400)
     
     dict = Utility.getMean(airport1, airport2, carrier, month)
+    if(dict == "None"):
+        return flask.abort(400, "empty dictionary return for mean")
+    standardDeviationDictionary = Utility.getStandardDeviation(airport1, airport2, carrier, month, dict)
+    
+    finalDictionary = {
+        "mean" : dict,
+        "standard-deviation" : standardDeviationDictionary
     
     
+    }
     
-    return json.dumps(dict) 
+    return json.dumps(finalDictionary) 
         
     
 @app.route("/carriers/<code>/statistics/delays/amount", methods=["GET"])  

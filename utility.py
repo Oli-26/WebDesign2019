@@ -4,7 +4,7 @@ import flask
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from __init__ import app, db
-
+import math
 
 ## INIT and UPDATE core objects
 
@@ -260,5 +260,69 @@ class Utility():
             "total": total/i
         }
         if(month is None):
-            return {"month" : "all", "flights-data-mean" : dict}
+            return {"month" : "all", "minutes-data-mean" : dict}
+        return {"month" : Time.getMonthText(month), "minutes-data-mean" : dict}
+        
+    def getStandardDeviation(airport1, airport2, carrier, month, meanDictionary):
+        realCarrier = carrier
+        if(month == "None"):
+            month = None
+        if(meanDictionary == "None"):
+            return None
+        meanDictionary = meanDictionary["minutes-data-mean"]    
+        print(meanDictionary)
+        lateAircraft = 0
+        carrier = 0
+        security = 0
+        weather = 0
+        nationalAviationSystem = 0
+        total = 0
+        i = 0
+        times = []
+        if(month is None):
+            times = Time.query.all()
+        else:
+            times = Time.query.filter_by(month = month).all()
+        for t in times:
+            #print(str(airport.id) + "  " + str(carrier.id) + "  ")
+            relation1 = Relation_table.query.filter_by(airportID = airport1.id, carrierID = realCarrier.id, timeID = t.id).first()
+            relation2 = Relation_table.query.filter_by(airportID = airport2.id, carrierID = realCarrier.id, timeID = t.id).first()
+            if(not (relation1 is None) and not (relation2 is None)):
+                statistics1 = Statistics.query.filter_by(relationID = relation1.id).first()
+                statistics2 = Statistics.query.filter_by(relationID = relation2.id).first()
+                delay1 = Delays.query.filter_by(id = statistics1.delayID).first()
+                minutes1 = Delays_minutes.query.filter_by(id = delay1.getMinutesID()).first()
+                delay2 = Delays.query.filter_by(id = statistics2.delayID).first()
+                minutes2 = Delays_minutes.query.filter_by(id = delay2.getMinutesID()).first()
+                
+                
+                
+                lateAircraft = lateAircraft + pow(minutes1.getLateAircraft() - meanDictionary["late-aircraft"], 2) 
+                lateAircraft = lateAircraft + pow(minutes2.getLateAircraft() - meanDictionary["late-aircraft"], 2) 
+                carrier = carrier + pow(minutes1.getCarrier() - meanDictionary["carrier"], 2)
+                carrier = carrier + pow(minutes2.getCarrier() - meanDictionary["carrier"], 2)
+                security = security + pow(minutes1.getSecurity() - meanDictionary["security"], 2)
+                security = security + pow(minutes2.getSecurity() - meanDictionary["security"], 2)
+                weather = weather + pow(minutes1.getWeather() - meanDictionary["weather"], 2)
+                weather = weather + pow(minutes2.getWeather() - meanDictionary["weather"], 2)
+                nationalAviationSystem = nationalAviationSystem + pow(minutes1.getNationalAviationSystem()- meanDictionary["nas"], 2)
+                nationalAviationSystem = nationalAviationSystem + pow(minutes2.getNationalAviationSystem()- meanDictionary["nas"], 2)
+                
+                
+                total = total + pow(minutes1.getTotal()-meanDictionary["total"], 2)
+                total = total + pow(minutes2.getTotal()-meanDictionary["total"], 2)
+                i = i + 2
+        
+        if(i == 0):
+            return "None"
+        dict = {
+            "late-aircraft" : math.sqrt(lateAircraft/i),
+            "carrier" : math.sqrt(carrier/i),
+            "security" :  math.sqrt(security/i),
+            "weather" :  math.sqrt(weather/i),
+            "nas" :  math.sqrt(nationalAviationSystem/i),
+            "total":  math.sqrt(total/i)
+        }
+        if(month is None):
+            return {"month" : "all", "flights-data-standard-deviation" : dict}
         return {"month" : Time.getMonthText(month), "flights-data" : dict}
