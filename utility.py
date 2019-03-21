@@ -20,22 +20,23 @@ from Core.statistics import Statistics
 
 class Utility():
     
-    def getFlightsByMonth(carrier, month, airport = None):
-        if(not (month is None) and month == "None"):
+    def getFlightsByMonth(realCarrier, month, airport = None):
+        if month is not None and month == "None":
             month = None
         cancelled = 0
         delayed = 0
         ontime = 0
         diverted = 0
         total = 0
-        if(airport is None):
-            if(month is None):
-                times = Time.query.all()
-            else:
-                times = Time.query.filter_by(month = month).all() 
-            
+
+        if month is None:
+            times = Time.query.all()
+        else:
+            times = Time.query.filter_by(month=month).all()
+
+        if airport is None:
             for t in times:
-                relations = Relation_table.query.filter_by(carrierID = carrier.id, timeID = t.id).all()
+                relations = Relation_table.query.filter_by(carrierID = realCarrier.id, timeID = t.id).all()
                 for r in relations:
                     statistics = Statistics.query.filter_by(relationID = r.id).first()
                     flights = Flights.query.filter_by(id = statistics.flightID).first()
@@ -46,15 +47,9 @@ class Utility():
                     diverted = diverted + flights.getDiverted()
                     total = total + flights.getTotal()
         else:
-            times = []
-            if(month is None):
-                times = Time.query.all()
-            else:
-                times = Time.query.filter_by(month = month).all()
-
             for t in times:
-                relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = t.id).first()
-                if(not (relation is None)):
+                relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = realCarrier.id, timeID = t.id).first()
+                if relation is not None:
                     statistics = Statistics.query.filter_by(relationID = relation.id).first()
                     flights = Flights.query.filter_by(id = statistics.flightID).first()
                     
@@ -63,8 +58,7 @@ class Utility():
                     delayed = delayed + flights.getDelayed()
                     diverted = diverted + flights.getDiverted()
                     total = total + flights.getTotal()
-                
-            
+
         dict = {
             "cancelled" : cancelled,
             "ontime" : ontime,
@@ -73,29 +67,27 @@ class Utility():
             "total" : total
         }
         
-        if(month is None):
-            return {"month" : "all", "flights-data" : dict}
-        return {"month" : Time.getMonthText(month), "flights-data" : dict}
-        
-     
-    def getMinutesByMonth(carrier, month, airport = None):
-        realCarrier = carrier  ## because carrier is a variable in minutes.
-        if(not (month is None) and month == "None"):
+        if month is None:
+            return {"month": "all", "flights-data": dict}
+        return {"month": Time.getMonthText(month), "flights-data": dict}
+
+    def getMinutesByMonth(realCarrier, month, airport = None):
+        if month is not None and month == "None":
             month = None
+
         lateAircraft = 0
         carrier = 0
         security = 0
         weather = 0
         nationalAviationSystem = 0
         total = 0
+
+        if month is None:
+            times = Time.query.all()
+        else:
+            times = Time.query.filter_by(month=month).all()
         
-        
-        if(airport is None):
-            times = []
-            if(month is None):
-                times = Time.query.all()
-            else:
-                times = Time.query.filter_by(month = month).all()
+        if airport is None:
             for t in times:
                 #print(str(airport.id) + "  " + str(carrier.id) + "  ")
                 relations = Relation_table.query.filter_by(carrierID = realCarrier.id, timeID = t.id).all()
@@ -111,15 +103,10 @@ class Utility():
                     nationalAviationSystem = nationalAviationSystem + minutes.getNationalAviationSystem()
                     total = total + minutes.getTotal()
         else:
-            times = []
-            if(month is None):
-                times = Time.query.all()
-            else:
-                times = Time.query.filter_by(month = month).all()
             for t in times:
                 #print(str(airport.id) + "  " + str(carrier.id) + "  ")
                 relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = realCarrier.id, timeID = t.id).first()
-                if(not (relation is None)):
+                if relation is not None:
                     statistics = Statistics.query.filter_by(relationID = relation.id).first()
                     delay = Delays.query.filter_by(id = statistics.delayID).first()
                     minutes = Delays_minutes.query.filter_by(id = delay.getMinutesID()).first()
@@ -130,7 +117,6 @@ class Utility():
                     weather = weather + minutes.getWeather()
                     nationalAviationSystem = nationalAviationSystem + minutes.getNationalAviationSystem()
                     total = total + minutes.getTotal()
-            
         
         dict = {
             "late-aircraft" : lateAircraft,
@@ -140,28 +126,25 @@ class Utility():
             "nas" : nationalAviationSystem,
             "total" : total
         }
-        if(month is None):
+        if month is None:
             return {"month" : "all", "minutes-data" : dict}
         return {"month" : Time.getMonthText(month), "minutes-data" : dict}
         
-    def getAmountByMonth(carrier, month, airport = None):
-        realCarrier = carrier  ## because carrier is a variable in minutes.
-        if(not (month is None) and month == "None"):
+    def getAmountByMonth(realCarrier, month, airport = None):
+        if month is not None and month == "None":
             month = None
         lateAircraft = 0
         carrier = 0
         security = 0
         weather = 0
         nationalAviationSystem = 0
-        
-        
 
-        if(airport is None):
-            times = []
-            if(month is None):
-                times = Time.query.all()
-            else:
-                times = Time.query.filter_by(month = month).all()
+        if month is None:
+            times = Time.query.all()
+        else:
+            times = Time.query.filter_by(month=month).all()
+
+        if airport is None:
             for t in times:
                 #print(str(airport.id) + "  " + str(carrier.id) + "  ")
                 relations = Relation_table.query.filter_by(carrierID = realCarrier.id, timeID = t.id).all()
@@ -177,15 +160,10 @@ class Utility():
                     nationalAviationSystem = nationalAviationSystem + amount.getNationalAviationSystem()
                    
         else:
-            times = []
-            if(month is None):
-                times = Time.query.all()
-            else:
-                times = Time.query.filter_by(month = month).all()
             for t in times:
                 #print(str(airport.id) + "  " + str(carrier.id) + "  ")
                 relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = realCarrier.id, timeID = t.id).first()
-                if(not (relation is None)):
+                if relation is not None:
                     statistics = Statistics.query.filter_by(relationID = relation.id).first()
                     delay = Delays.query.filter_by(id = statistics.delayID).first()
                     amount = Delays_amount.query.filter_by(id = delay.getMinutesID()).first()
@@ -195,8 +173,6 @@ class Utility():
                     security = security + amount.getSecurity()
                     weather = weather + amount.getWeather()
                     nationalAviationSystem = nationalAviationSystem + amount.getNationalAviationSystem()
-                   
-            
 
         dict = {
             "late-aircraft" : lateAircraft,
@@ -205,14 +181,13 @@ class Utility():
             "weather" : weather,
             "nas" : nationalAviationSystem
         }
-        if(month is None):
+        if month is None:
             return {"month" : "all", "amount-data" : dict}
         return {"month" : Time.getMonthText(month), "amount-data" : dict}
         
         
-    def getMean(airport1, airport2, carrier, month):
-        realCarrier = carrier
-        if(month == "None"):
+    def getMean(airport1, airport2, realCarrier, month):
+        if month == "None":
             month = None
     
         lateAircraft = 0
@@ -222,24 +197,23 @@ class Utility():
         nationalAviationSystem = 0
         total = 0
         i = 0
-        times = []
-        if(month is None):
+
+        if month is None:
             times = Time.query.all()
         else:
             times = Time.query.filter_by(month = month).all()
+
         for t in times:
             #print(str(airport.id) + "  " + str(carrier.id) + "  ")
             relation1 = Relation_table.query.filter_by(airportID = airport1.id, carrierID = realCarrier.id, timeID = t.id).first()
             relation2 = Relation_table.query.filter_by(airportID = airport2.id, carrierID = realCarrier.id, timeID = t.id).first()
-            if(not (relation1 is None) and not (relation2 is None)):
+            if relation1 is not None and relation2 is not None:
                 statistics1 = Statistics.query.filter_by(relationID = relation1.id).first()
                 statistics2 = Statistics.query.filter_by(relationID = relation2.id).first()
                 delay1 = Delays.query.filter_by(id = statistics1.delayID).first()
                 minutes1 = Delays_minutes.query.filter_by(id = delay1.getMinutesID()).first()
                 delay2 = Delays.query.filter_by(id = statistics2.delayID).first()
                 minutes2 = Delays_minutes.query.filter_by(id = delay2.getMinutesID()).first()
-                
-                
                 
                 lateAircraft = lateAircraft + minutes1.getLateAircraft() + minutes2.getLateAircraft()
                 carrier = carrier + minutes1.getCarrier() + minutes2.getCarrier()
@@ -249,7 +223,7 @@ class Utility():
                 total = total + minutes1.getTotal() + minutes2.getTotal()
                 i = i + 2
         
-        if(i == 0):
+        if i == 0:
             return "None"
         dict = {
             "late-aircraft" : lateAircraft/i,
@@ -259,16 +233,16 @@ class Utility():
             "nas" : nationalAviationSystem/i,
             "total": total/i
         }
-        if(month is None):
+        if month is None:
             return {"month" : "all", "minutes-data-mean" : dict}
         return {"month" : Time.getMonthText(month), "minutes-data-mean" : dict}
         
-    def getStandardDeviation(airport1, airport2, carrier, month, meanDictionary):
-        realCarrier = carrier
-        if(month == "None"):
+    def getStandardDeviation(airport1, airport2, realCarrier, month, meanDictionary):
+        if month == "None":
             month = None
-        if(meanDictionary == "None"):
+        if meanDictionary == "None":
             return None
+
         meanDictionary = meanDictionary["minutes-data-mean"]    
         print(meanDictionary)
         lateAircraft = 0
@@ -278,25 +252,24 @@ class Utility():
         nationalAviationSystem = 0
         total = 0
         i = 0
-        times = []
-        if(month is None):
+
+        if month is None:
             times = Time.query.all()
         else:
             times = Time.query.filter_by(month = month).all()
+
         for t in times:
             #print(str(airport.id) + "  " + str(carrier.id) + "  ")
             relation1 = Relation_table.query.filter_by(airportID = airport1.id, carrierID = realCarrier.id, timeID = t.id).first()
             relation2 = Relation_table.query.filter_by(airportID = airport2.id, carrierID = realCarrier.id, timeID = t.id).first()
-            if(not (relation1 is None) and not (relation2 is None)):
+            if relation1 is not None and relation2 is not None:
                 statistics1 = Statistics.query.filter_by(relationID = relation1.id).first()
                 statistics2 = Statistics.query.filter_by(relationID = relation2.id).first()
                 delay1 = Delays.query.filter_by(id = statistics1.delayID).first()
                 minutes1 = Delays_minutes.query.filter_by(id = delay1.getMinutesID()).first()
                 delay2 = Delays.query.filter_by(id = statistics2.delayID).first()
                 minutes2 = Delays_minutes.query.filter_by(id = delay2.getMinutesID()).first()
-                
-                
-                
+
                 lateAircraft = lateAircraft + pow(minutes1.getLateAircraft() - meanDictionary["late-aircraft"], 2) 
                 lateAircraft = lateAircraft + pow(minutes2.getLateAircraft() - meanDictionary["late-aircraft"], 2) 
                 carrier = carrier + pow(minutes1.getCarrier() - meanDictionary["carrier"], 2)
@@ -307,14 +280,14 @@ class Utility():
                 weather = weather + pow(minutes2.getWeather() - meanDictionary["weather"], 2)
                 nationalAviationSystem = nationalAviationSystem + pow(minutes1.getNationalAviationSystem()- meanDictionary["nas"], 2)
                 nationalAviationSystem = nationalAviationSystem + pow(minutes2.getNationalAviationSystem()- meanDictionary["nas"], 2)
-                
-                
+
                 total = total + pow(minutes1.getTotal()-meanDictionary["total"], 2)
                 total = total + pow(minutes2.getTotal()-meanDictionary["total"], 2)
                 i = i + 2
         
-        if(i == 0):
+        if i == 0:
             return "None"
+
         dict = {
             "late-aircraft" : math.sqrt(lateAircraft/i),
             "carrier" : math.sqrt(carrier/i),
@@ -323,6 +296,6 @@ class Utility():
             "nas" :  math.sqrt(nationalAviationSystem/i),
             "total":  math.sqrt(total/i)
         }
-        if(month is None):
+        if month is None:
             return {"month" : "all", "flights-data-standard-deviation" : dict}
         return {"month" : Time.getMonthText(month), "flights-data" : dict}

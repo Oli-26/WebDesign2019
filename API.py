@@ -504,7 +504,7 @@ def getFlights(code = None):
             carrier = Carrier.query.filter_by(code = code).first()
             if(carrier is None):
                 flask.abort(400, "400(invalid paramter): carrier code invalid")
-            dictionary = Utility.getFlightsByMonth(carrier = carrier, month = month)
+            dictionary = Utility.getFlightsByMonth(realCarrier = carrier, month = month)
             dictionary["carrier-uri"] = "/carriers/"+code+queryString
             
         else:
@@ -513,7 +513,7 @@ def getFlights(code = None):
             airport = Airport.query.filter_by(code = airportCode).first()
             if(carrier is None or airport is None):
                 flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
-            dictionary = Utility.getFlightsByMonth(carrier = carrier, airport = airport, month = month)
+            dictionary = Utility.getFlightsByMonth(realCarrier = carrier, airport = airport, month = month)
             dictionary["carrier-uri"] = "/carriers/"+code+queryString
            
                 
@@ -556,7 +556,7 @@ def getMinutes(code = None):
                 
                 if(carrier is None):
                     flask.abort(400, "400(invalid paramter): carrier code invalid")
-                dictionary = Utility.getMinutesByMonth(carrier = carrier, month = month)
+                dictionary = Utility.getMinutesByMonth(realCarrier= carrier, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 
         else:
@@ -564,7 +564,7 @@ def getMinutes(code = None):
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
-                dictionary = Utility.getMinutesByMonth(carrier = carrier, airport = airport, month = month)
+                dictionary = Utility.getMinutesByMonth(realCarrier = carrier, airport = airport, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 
                 
@@ -648,7 +648,7 @@ def getAmount(code = None):
                 
                 if(carrier is None):
                     flask.abort(400, "400(invalid paramter): carrier code invalid")
-                dictionary = Utility.getAmountByMonth(carrier = carrier, month = month)
+                dictionary = Utility.getAmountByMonth(realCarrier = carrier, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 #return json.dumps(dictionary)
         else:
@@ -656,7 +656,7 @@ def getAmount(code = None):
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
                     flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
-                dictionary = Utility.getAmountByMonth(carrier = carrier, airport = airport, month = month)
+                dictionary = Utility.getAmountByMonth(realCarrier = carrier, airport = airport, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 #return json.dumps(dictionary)
                 
