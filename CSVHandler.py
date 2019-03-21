@@ -6,7 +6,7 @@ from flask_restful import Resource, Api
 from __init__ import app, db
 import math
 
-## INIT and UPDATE core objects
+
 
 from Core.airport import Airport
 from Core.time import Time 
