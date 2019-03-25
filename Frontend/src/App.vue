@@ -11,9 +11,8 @@
     </div>
     <div id="content">
       <div id="left">
-        
-        <p>{{ date.month }} / {{  date.year  }}</p>
-        <month-picker @change="showDate"></month-picker>
+        <p id="selected_date">{{ date.month }} / {{  date.year  }}</p>
+        <month-picker id="month_input" @change="showDate"></month-picker>
         
       </div>
     </div>
@@ -81,18 +80,64 @@ export default {
   position:absolute;
   display:inline-block;
   float:left;
-  width:200px;
+  width:240px;
   height:100%;
+  padding-top:50px;
   background-color: #8ac3c6;
   text-align:center;
   z-index:0;
 }
 
+#selected_date {
+  font-size:16pt;
+  color:#FFF;
+  font-weight:900;
+}
+
 #view {
   position:relative;
   display:inline-block;
-  left:200px;
+  left:240px;
   padding:10px;
+}
+
+#month_input {
+  width:220px;
+  margin:0 auto;
+  padding:10px;
+  background-color:#0f9ca2;
+  color:#FFF;
+  border:none;
+  box-shadow: none !important;
+  font-size:10pt;
+}
+
+.month-picker-year button {
+  background-color:#a3dadd !important;
+  border:none !important;
+  color:#FFF !important;
+  padding-bottom:5px !important;
+}
+.month-picker-year button:hover {
+  background-color:#397c7f !important;
+  border:none !important;
+  color:#FFF !important;
+}
+
+.month-picker-month {
+  flex-basis:calc(50% - 4px) !important;
+  padding:10px !important;
+  margin:2px !important;
+  border:none !important;
+  box-shadow:none !important;
+  background-color:#a3dadd !important;
+  color:#000;
+}
+
+.month-picker-month.selected {
+  font-weight:normal !important;
+  font-size:10pt !important;
+  background-color:#397c7f !important;
 }
 
 </style>
