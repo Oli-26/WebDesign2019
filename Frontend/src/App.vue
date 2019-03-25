@@ -56,7 +56,7 @@ export default {
 
 #logo {
   position:absolute;
-  height:130px;
+  height:120px;
   top:-5px;
   z-index:99;
 }
