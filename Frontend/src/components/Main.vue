@@ -1,7 +1,7 @@
 <template>
 	<div class="hello">
 		<h1>This is our super fancy frontend.</h1>
-		<p>Components are next.</p>
+		<p>Components are next. {{ response }}</p>
 		<router-link to="/HelloWorld">Routing demonstration</router-link>
 		<sui-card>
 	      <img src="../assets/logo.png" />
@@ -16,3 +16,24 @@
     </sui-card>
 	</div>
 </template>
+
+<script>
+    import { testFunction } from '../api'
+    export default {
+        
+        data () {
+            return {
+                response: "None"
+            }
+        },        
+        created() {
+            this.response = testFunction()
+               
+        }
+        
+        
+    }
+    
+    
+    
+</script>

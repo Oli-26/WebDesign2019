@@ -7,7 +7,9 @@ import SuiVue from 'semantic-ui-vue';
 import '../semantic/dist/semantic.min.css';
 import MonthPicker from 'vue-month-picker'
 import MonthPickerInput from 'vue-month-picker'
+import axios from 'axios'
 
+axios.defaults.baseURL = 'http://127.0.0.1:5002/';
 Vue.use(MonthPicker)
 Vue.use(MonthPickerInput)
 
