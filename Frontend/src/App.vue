@@ -11,7 +11,7 @@
     </div>
     <div id="content">
       <div id="left">
-        <p>Month Picker Here</p>
+        <p>Chose a month</p>
       </div>
     </div>
     <router-view id="view"/>

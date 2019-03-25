@@ -1,7 +1,6 @@
 # frontend
 
-> Frontend Vue project for RUG Web Engineering
-
+> Frontend Vue project for Web design
 ## Build Setup
 
 ``` bash
