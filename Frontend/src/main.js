@@ -5,6 +5,12 @@ import App from './App';
 import router from './router';
 import SuiVue from 'semantic-ui-vue';
 import '../semantic/dist/semantic.min.css';
+import MonthPicker from 'vue-month-picker'
+import MonthPickerInput from 'vue-month-picker'
+
+Vue.use(MonthPicker)
+Vue.use(MonthPickerInput)
+
 
 Vue.use(SuiVue);
 Vue.config.productionTip = false;

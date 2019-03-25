@@ -11,7 +11,10 @@
     </div>
     <div id="content">
       <div id="left">
-        <p>Chose a month</p>
+        
+        <p>{{ date.month }} / {{  date.year  }}</p>
+        <month-picker @change="showDate"></month-picker>
+        
       </div>
     </div>
     <router-view id="view"/>
@@ -93,3 +96,30 @@ export default {
 }
 
 </style>
+        
+        
+        
+ 
+
+<script>
+import MonthPicker from 'vue-month-picker'
+
+export default {
+	data() {
+		return {
+			date: {
+				from: null,
+				to: null,
+				month: null,
+				year: null
+			}
+		}
+	},
+
+	methods: {
+		showDate (date) {
+			this.date = date
+		}
+	}
+}
+</script>       
