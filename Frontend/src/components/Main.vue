@@ -1,9 +1,15 @@
 <template>
 	<div class="Airports">
 		<sui-card-group :items-per-row="3">
-			<sui-card class="airport_card" v-for="(value, key) in airports">
-				<sui-image src="/src/assets/airport_card.png" />
-				{{ key }} ; {{ value }}
+			<sui-card class="airport_card" v-for="airport in airports">
+				<sui-card-content>
+					<sui-image src="static/images/airport_card.png" size="large" /><br /><br />
+					<sui-card-header> {{ airport.name }} </sui-card-header>
+					<sui-divider />
+					<sui-card-content extra>
+						{{ airport.uri }} <span slot="right"><sui-icon name="angle right" /></span>
+					</sui-card-content>
+				</sui-card-content>
 			</sui-card>
 		</sui-card-group>
     </div>
@@ -42,7 +48,7 @@
 </script>
 
 <style>
-	.airport_card {
-		
-	}
+sui-card-header {
+	height:200px !important;
+}
 </style>

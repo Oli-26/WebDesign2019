@@ -54,6 +54,12 @@ a:hover {
   color:#397c7f !important;
 }
 
+#header {
+  position:fixed;
+  width:100%;
+  z-index:1;
+}
+
 #logo_header {
   width:100%;
 }
@@ -100,14 +106,11 @@ a:hover {
   font-size:18pt;
 }
 
-#content {
-}
-
 #left {
-  position:absolute;
+  position:fixed;
   width:240px;
   height:100%;
-  padding-top:25px;
+  padding-top:125px;
   background-color: #8ac3c6;
   text-align:center;
   z-index:0;
@@ -122,7 +125,9 @@ a:hover {
 #view {
   position:absolute;
   left:240px;
+  top:100px;
   padding:25px;
+  z-index:-10;
 }
 
 #month_input {
