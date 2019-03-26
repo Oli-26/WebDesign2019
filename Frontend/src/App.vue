@@ -3,10 +3,20 @@
     <div id="header">
       <div id="top_line"></div>
       <div id="main_header">
-        <div id="logo_container"><img id="logo" src="./assets/temp_logo.png" /></div>
-        <div id="breadcrumb_container">
-          <strong>Home</strong> / Airports
+        <div id="logo_container">
+          <router-link to="/">
+            <img id="logo" src="./assets/temp_logo.png" />
+          </router-link>
         </div>
+        <sui-container class="ui breadcrumbs">
+          <sui-breadcrumb>
+            <h2>
+              <sui-breadcrumb-section active link>
+                <router-link to="/">Home</router-link> 
+              </sui-breadcrumb-section>
+            </h2>
+          </sui-breadcrumb>
+        </sui-container>
       </div>
     </div>
     <div id="content">
@@ -27,12 +37,21 @@ export default {
 </script>
 
 <style>
+a {
+  color: #397c7f !important;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+a:hover {
+  color:#8ac3c6 !important;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin:0;
   padding:0;
+  color:#397c7f !important;
 }
 
 #logo_header {
@@ -66,6 +85,15 @@ export default {
 #breadcrumb_container{
   position:absolute;
   display: inline-block;
+  color: #397c7f !important;
+  top:60px;
+  left:270px;
+  font-size:18pt;
+}
+
+.breadcrumbs {
+  position:absolute;
+  display: inline-block;
   color: #397c7f;
   top:60px;
   left:270px;
@@ -73,16 +101,13 @@ export default {
 }
 
 #content {
-  width:100%;
 }
 
 #left {
   position:absolute;
-  display:inline-block;
-  float:left;
   width:240px;
   height:100%;
-  padding-top:50px;
+  padding-top:25px;
   background-color: #8ac3c6;
   text-align:center;
   z-index:0;
@@ -95,22 +120,24 @@ export default {
 }
 
 #view {
-  position:relative;
-  display:inline-block;
+  position:absolute;
   left:240px;
-  padding:10px;
-  width: 1800px;
+  padding:25px;
 }
 
 #month_input {
   width:220px;
   margin:0 auto;
   padding:10px;
-  background-color:#0f9ca2;
-  color:#FFF;
-  border:none;
+  background-color:#FFF;
+  color:#397c7f;
+  border:none !important;
   box-shadow: none !important;
   font-size:10pt;
+}
+
+.month-picker {
+  box-shadow: none !important;
 }
 
 .month-picker-year button {
@@ -120,9 +147,9 @@ export default {
   padding-bottom:5px !important;
 }
 .month-picker-year button:hover {
-  background-color:#397c7f !important;
+  background-color:#FFF !important;
   border:none !important;
-  color:#FFF !important;
+  color:#397c7f !important;
 }
 
 .month-picker-month {
@@ -131,14 +158,15 @@ export default {
   margin:2px !important;
   border:none !important;
   box-shadow:none !important;
-  background-color:#a3dadd !important;
-  color:#000;
+  background-color:#FFF !important;
+  color:#397c7f;
 }
 
 .month-picker-month.selected {
   font-weight:normal !important;
   font-size:10pt !important;
-  background-color:#397c7f !important;
+  background-color:#a3dadd !important;
+  color:#FFF !important;
 }
 
 </style>
