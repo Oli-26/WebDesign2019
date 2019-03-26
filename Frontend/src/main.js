@@ -16,6 +16,7 @@ Vue.use(MonthPickerInput)
 
 Vue.use(SuiVue);
 Vue.config.productionTip = false;
+Vue.component();
 
 /* eslint-disable no-new */
 new Vue({
