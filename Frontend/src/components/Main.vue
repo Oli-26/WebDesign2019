@@ -11,7 +11,7 @@
 							</sui-card-header>
 							{{ airport.name }}
 							<sui-divider />
-							<router-link to="/Airports/">
+							<router-link :to="{ path: '/Airports/' + airport.code}">
 								<div>
 									{{ airport.code }}
 									<span slot="right">
