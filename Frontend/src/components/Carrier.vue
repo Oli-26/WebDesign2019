@@ -26,7 +26,7 @@
                     this.carrierName = response.data.name
                     this.carrierURI = response.data["statistics-uri"]
                     for(var i = 0; i < response.data["airport-uris"].length; i++){
-                        this.airportURIs.push(reponse.data["airport-uris"][i])
+                        this.airportURIs.push(response.data["airport-uris"][i])
                         
                     }
                 })    
