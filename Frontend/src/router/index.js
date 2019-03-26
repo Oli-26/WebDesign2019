@@ -69,7 +69,7 @@ export default new Router({
     },
     {
       path: '/carriers/:carrierID/statistics/delays/amount',
-      name: 'DMinutes',
+      name: 'DelaysAmount',
       component: DAmount
     }
   ]
