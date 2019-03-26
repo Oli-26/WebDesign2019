@@ -8,7 +8,7 @@
        
     <sui-card-group :items-per-row="3">
         <div v-for="carrier in carriers">  
-            <a class="item" v-bind:href=carrier target="_blank">    
+            <a class="item" target="_blank" v-bind:href=carrier >    
                 
                       
                     <sui-card>
@@ -49,8 +49,8 @@
                     console.log(response.data)
                     this.name = response.data["name"]
                     for(var i = 0; i < response.data["uri-list"].length; i++){
-                        
-                        this.carriers.push(response.data[i])
+                        console.log(response.data["uri-list"][i])
+                        this.carriers.push(response.data["uri-list"][i])
                         
                     }
                 }) 
