@@ -12,7 +12,11 @@
           <sui-breadcrumb>
             <h2>
               <sui-breadcrumb-section active link>
-                <router-link to="/">Home</router-link> 
+                <router-link to="/">Airports</router-link>
+              </sui-breadcrumb-section>
+              <sui-breadcrumb-divider />
+              <sui-breadcrumb-section link>
+                <router-link to="/Carriers">Carriers</router-link> 
               </sui-breadcrumb-section>
             </h2>
           </sui-breadcrumb>

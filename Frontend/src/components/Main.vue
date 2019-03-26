@@ -5,9 +5,7 @@
 						<sui-card-content>
 							<sui-image src="static/images/airport_card.png" size="large" /><br /><br />
 							<sui-card-header>
-								
 									{{ airport.city }}
-								
 							</sui-card-header>
 							{{ airport.name }}
 							<sui-divider />
