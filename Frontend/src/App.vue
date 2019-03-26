@@ -57,7 +57,7 @@ a:hover {
 #header {
   position:fixed;
   width:100%;
-  z-index:1;
+  z-index:10;
 }
 
 #logo_header {
@@ -113,7 +113,7 @@ a:hover {
   padding-top:125px;
   background-color: #8ac3c6;
   text-align:center;
-  z-index:0;
+  z-index:5;
 }
 
 #selected_date {
@@ -127,7 +127,7 @@ a:hover {
   left:240px;
   top:100px;
   padding:25px;
-  z-index:-10;
+  z-index:1;
 }
 
 #month_input {
