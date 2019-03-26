@@ -99,6 +99,7 @@ export default {
   display:inline-block;
   left:240px;
   padding:10px;
+  width: 1800px;
 }
 
 #month_input {
