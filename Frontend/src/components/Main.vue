@@ -33,13 +33,8 @@
                             this.airports.push(response.data[i])
                         }
                     }
-                    //return response.data
-                    
-                })
-               
-        }
-       
-        
+                }) 
+        }  
     }
     
     
