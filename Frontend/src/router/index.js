@@ -28,7 +28,7 @@ export default new Router({
       component: Airports
     },
     {
-      path: '/airports/:airportID',
+      path: '/airports/:airportCode',
       name: 'Airport',
       component: Airport
     },
@@ -38,12 +38,12 @@ export default new Router({
       component: Carriers 
     },
     {
-      path: '/carriers/:carrierID',
+      path: '/carriers/:carrierCode',
       name: 'Carrier',
       component: Carrier
     },
     {
-      path: '/carriers/:carrierID/statistics',
+      path: '/carriers/:carrierCode/statistics',
       name: 'Statistics',
       component: Statistics
     }
