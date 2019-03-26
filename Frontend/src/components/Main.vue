@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import { testFunction } from '../api'
+    import { getAirports } from '../api'
     export default {
         
         data () {
@@ -46,7 +46,7 @@
         },        
         created() {
             
-            testFunction()
+            getAirports()
                 .then(response => {
                     console.log(response.data)
                     for(var i = 0; i < response.data.length; i++){
