@@ -6,31 +6,29 @@
        
      
        <div>
-    <div v-for="airport in airports">  
-    
        
-
-     
-    
-        <a class="item" v-bind:href=airport.uri target="_blank">    
-            <sui-card-group :items-per-row="3">
-                  
-                <sui-card v-for="airport in airports">
-                    <img src="../assets/logo.png" />
-                    <sui-card-content>
-                        <sui-card-header> {{airport.name }} </sui-card-header>
+    <sui-card-group :items-per-row="3">
+        <div v-for="airport in airports">  
+            <a class="item" v-bind:href=airport.uri target="_blank">    
+                
+                      
+                    <sui-card>
+                        <img src="../assets/logo.png" />
+                        <sui-card-content>
+                            <sui-card-header> {{airport.name }} </sui-card-header>
+                            
+                          </sui-card-content>
+                          <sui-card-content extra>
+                            <sui-icon name="user" />
+                            Airport
+                            </sui-card-content>
                         
-                      </sui-card-content>
-                      <sui-card-content extra>
-                        <sui-icon name="user" />
-                        Airport
-                        </sui-card-content>
-                    
-                </sui-card>
-            
-            </sui-card-group>
-        </a>    
-    </div>
+                    </sui-card>
+                
+               
+            </a>    
+        </div>
+     </sui-card-group>
   </div>
 	</div>
 </template>
@@ -50,18 +48,12 @@
                 .then(response => {
                     console.log(response.data)
                     for(var i = 0; i < response.data.length; i++){
-                        console.log(response.data[i].namw)
                         if(response.data[i] != null){
                             this.airports.push(response.data[i])
                         }
                     }
-                    //return response.data
-                    
-                })
-               
-        }
-       
-        
+                }) 
+        }  
     }
     
     

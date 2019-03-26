@@ -22,9 +22,19 @@ export function getAirports(airportCode = "None")  {
 export function getCarriers(carrierCode = "None", airportCode = "None")  {
     try {
         if(carrierCode != "None"){
-            return axios.get('/carriers/' + carrierCode + "?airport-code="+airportCode)
+            if(airportCode != "None"){
+                return axios.get('/carriers/' + carrierCode + "?airport-code="+airportCode)
+            }else{
+                return axios.get('/carriers/' + carrierCode)
+            }
+            
         }else{
-            return axios.get("/carriers?airport-code="+airportCode)
+            if(airportCode != "None"){
+                return axios.get("/carriers?airport-code="+airportCode)
+            }else{
+                return axios.get("/carriers")
+            }
+           
         }
 
     } catch (error) {

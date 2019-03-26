@@ -4,6 +4,8 @@ import Main from '@/components/Main'
 import HelloWorld from '@/components/HelloWorld'
 import Airports from '@/components/airports'
 import Carriers from '@/components/carriers'
+import Airport from '@/components/airport'
+import Carrier from '@/components/carrier'
 import Statistics from '@/components/statistics'
 Vue.use(Router)
 
@@ -27,8 +29,8 @@ export default new Router({
     },
     {
       path: '/airports/:airportID',
-      name: 'Airports',
-      component: Airports
+      name: 'Airport',
+      component: Airport
     },
     {
       path: '/carriers',
@@ -37,8 +39,8 @@ export default new Router({
     },
     {
       path: '/carriers/:carrierID',
-      name: 'Carriers',
-      component: Carriers
+      name: 'Carrier',
+      component: Carrier
     },
     {
       path: '/carriers/:carrierID/statistics',
