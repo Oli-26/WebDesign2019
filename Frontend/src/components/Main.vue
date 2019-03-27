@@ -1,36 +1,24 @@
 <template>
 	<div class="Airports">
-		<sui-card-group :items-per-row="3">
-				<sui-card class="airport_card" v-for="airport in airports">
-						<sui-card-content>
-							<sui-image src="static/images/airport_card.png" size="large" /><br /><br />
-							<sui-card-header>
-									{{ airport.city }}
-							</sui-card-header>
-							{{ airport.name }}
-							<sui-divider />
-							<router-link :to="{ path: '/Airports/' + airport.code}">
-								<div>
-									{{ airport.code }}
-									<span slot="right">
-										<sui-icon name="angle right" />
-									</span>
-								</div>
-							</router-link>
-					</sui-card-content>
-				</sui-card>
+		<sui-card-group :items-per-row="3" stackable>
+			<AirportCard v-for="airport in airports" :airport="airport" :key="airport.code" />
 		</sui-card-group>
     </div>
 </template>
 
 <script>
     import { getAirports } from '../api'
+    import AirportCard from './AirportCard'
+
     export default {
         data () {
             return {
                 airports: []
             }
-        },      
+        },   
+        components: {
+        	AirportCard
+        },
         created() {
             
             getAirports()

@@ -29,8 +29,8 @@
         <month-picker id="month_input" @change="showDate"></month-picker>
         
       </div>
+      <router-view id="view"/>
     </div>
-    <router-view id="view"/>
   </div>
 </template>
 
