@@ -69,12 +69,19 @@ def getAirport(code = None):
                 carriers = Carrier.query.filter_by(id = r.getCarrierID())
                 for c in carriers:
                     uri = "/carriers/" + c.getCode() + queryString
-                    if(not uri in dataList):
-                        dataList.append(uri)
+                    name = c.getName()
+                    dict = {
+                        "uri" : uri,
+                        "carrier-name" : name,
+                        "carrier-code" : c.getCode()
+                    }
+                    if(not dict in dataList):
+                        dataList.append(dict)
                     
             dict = {
                 "name" : airport.getName(),
                 "uri-list" : dataList
+                
             }
             
         else:
@@ -122,7 +129,8 @@ def getCarrier(code = None):
             for c in allCarriers:
                 dict = {
                     "name" : c.getName(),
-                    "uri" : "/carriers/" + c.getCode()+"?content-type="+str(contentType)
+                    "uri" : "/carriers/" + c.getCode()+"?content-type="+str(contentType),
+                    "code" : c.getCode()
                 }
                 dataList.append(dict)
         else:
@@ -135,7 +143,9 @@ def getCarrier(code = None):
                     carrier = Carrier.query.filter_by(id = r.getCarrierID()).first()
                     dict = {
                         "name" : carrier.getName(),
-                        "uri" : "/carriers/"+carrier.getCode()+queryString
+                        "uri" : "/carriers/"+carrier.getCode()+queryString,
+                        "code" : carrier.getCode()
+                        
                     }
                     if(not (dict in dataList)):
                         dataList.append(dict)

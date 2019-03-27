@@ -6,28 +6,35 @@
 		<router-link to="/HelloWorld">Routing demonstration</router-link>
         
         
-        <sui-card-group :items-per-row="3">
+         <sui-card-group :items-per-row="3">
         <div v-for="carrier in carriers">  
-            <a class="item" v-bind:href=carrier.uri target="_blank">    
+        
                 
                       
                     <sui-card>
                         <img src="../assets/logo.png" />
                         <sui-card-content>
-                            <sui-card-header> {{carrier.name }} </sui-card-header>
+                            <sui-card-header> {{carrier["name"] }} </sui-card-header>
                             
                           </sui-card-content>
                           <sui-card-content extra>
                             <sui-icon name="user" />
-                            Carrier
+                            <router-link :to="{path: '/Carriers/' + carrier['carrier-code']}">
+								<div>
+									{{ carrier['code'] }}
+									<span slot="right">
+										<sui-icon name="angle right" />
+									</span>
+								</div>
+							</router-link>
                             </sui-card-content>
                         
                     </sui-card>
                 
                
-            </a>    
-    </div>
-      </sui-card-group>   
+        
+        </div>
+     </sui-card-group> 
         
 	</div>
 </template>

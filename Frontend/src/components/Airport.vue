@@ -8,24 +8,31 @@
        
     <sui-card-group :items-per-row="3">
         <div v-for="carrier in carriers">  
-            <a class="item" target="_blank" v-bind:href=carrier >    
+        
                 
                       
                     <sui-card>
                         <img src="../assets/logo.png" />
                         <sui-card-content>
-                            <sui-card-header> {{carrier }} </sui-card-header>
+                            <sui-card-header> {{carrier["carrier-name"] }} </sui-card-header>
                             
                           </sui-card-content>
                           <sui-card-content extra>
                             <sui-icon name="user" />
-                            Carrier
+                            <router-link :to="{path: '/Carriers/' + carrier['carrier-code']}">
+								<div>
+									{{ carrier['carrier-code'] }}
+									<span slot="right">
+										<sui-icon name="angle right" />
+									</span>
+								</div>
+							</router-link>
                             </sui-card-content>
                         
                     </sui-card>
                 
                
-            </a>    
+        
         </div>
      </sui-card-group>
   </div>
