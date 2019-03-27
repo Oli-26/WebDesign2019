@@ -112,3 +112,9 @@
         }
     }
 </script>
+
+<style>
+.airport_card {
+    text-align: center;
+}
+</style>

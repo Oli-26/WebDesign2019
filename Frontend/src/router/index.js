@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/Main'
-import HelloWorld from '@/components/HelloWorld'
-import Airports from '@/components/airports'
 import Carriers from '@/components/carriers'
 import Airport from '@/components/airport'
 import Carrier from '@/components/carrier'
@@ -23,14 +21,9 @@ export default new Router({
       component: Main
     },
     {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
       path: '/airports',
       name: 'Airports',
-      component: Airports
+      component: Main
     },
     {
       path: '/airports/:airportCode',

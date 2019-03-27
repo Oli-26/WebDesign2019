@@ -128,9 +128,9 @@ def getCarrier(code = None):
    
             for c in allCarriers:
                 dict = {
-                    "name" : c.getName(),
+                    "carrier-name" : c.getName(),
                     "uri" : "/carriers/" + c.getCode()+"?content-type="+str(contentType),
-                    "code" : c.getCode()
+                    "carrier-code" : c.getCode()
                 }
                 dataList.append(dict)
         else:
@@ -142,9 +142,9 @@ def getCarrier(code = None):
                 for r in relations:
                     carrier = Carrier.query.filter_by(id = r.getCarrierID()).first()
                     dict = {
-                        "name" : carrier.getName(),
+                        "carrier-name" : carrier.getName(),
                         "uri" : "/carriers/"+carrier.getCode()+queryString,
-                        "code" : carrier.getCode()
+                        "carrier-code" : carrier.getCode()
                         
                     }
                     if(not (dict in dataList)):
@@ -166,7 +166,7 @@ def getCarrier(code = None):
                     airportURIs.append(uri)
                 
             dict = {
-                "name" : carrier.getName(),
+                "carrier-name" : carrier.getName(),
                 
                 "statistics-uri" : "/carriers/" + carrier.getCode() + "/statistics"+queryString,
                 "airport-uris" : airportURIs
