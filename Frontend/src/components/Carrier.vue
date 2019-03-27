@@ -1,13 +1,75 @@
 <template>
-	<div class="Carriers">
-		<h1>Carriers</h1>
-		<p>This is carriers page with carrierID {{ this.$route.params.carrierCode }}  name : {{ this.carrierName }}</p>
+	<div class="Carrier">
+		<h1> {{ this.carrierName }}</h1>
+		<p>This is carriers page with carrierID</p>
 		<router-link to="/HelloWorld">Routing demonstration</router-link>
-	</div>
+	        
+        <sui-card-group :items-per-row="3">         
+              
+            <sui-card>
+               
+                <sui-card-content>
+                    <sui-card-header> Flights data </sui-card-header>
+                    <div id="chart">
+                      <apexchart type=pie width=380 :options="flightChartOptions" :series="series" />
+                    </div>
+                    
+                  </sui-card-content>
+                  <sui-card-content extra>
+                    <sui-icon name="user" />
+                    <router-link :to="{path: '/Carriers' }">  
+                      link
+                    </router-link>
+                    </sui-card-content>
+                
+            </sui-card>
+
+            <sui-card>
+               
+                <sui-card-content>
+                    <sui-card-header> Delays minutes data </sui-card-header>
+                    <div id="chart">
+                      <apexchart type=pie width=380 :options="flightChartOptions" :series="series" />
+                    </div>
+                    
+                  </sui-card-content>
+                  <sui-card-content extra>
+                    <sui-icon name="user" />
+                    <router-link :to="{path: '/Carriers' }">  
+                      link
+                    </router-link>
+                    </sui-card-content>
+                
+            </sui-card>
+            
+            
+            
+                      <sui-card>
+               
+                <sui-card-content>
+                    <sui-card-header> Delays amount data </sui-card-header>
+                    <div id="chart">
+                      <apexchart type=pie width=380 :options="flightChartOptions" :series="series" />
+                    </div>
+                    
+                  </sui-card-content>
+                  <sui-card-content extra>
+                    <sui-icon name="user" />
+                    <router-link :to="{path: '/Carriers' }">  
+                      link
+                    </router-link>
+                    </sui-card-content>
+                
+            </sui-card>
+        </sui-card-group> 
+        
+    
+    </div>
 </template>
 
 
 <script>
+    
     import { getCarriers } from '../api'
     export default {
         
@@ -15,7 +77,24 @@
             return {
                 carrierName : null,
                 statisticsURI : null,
-                airportURIs : []
+                airportURIs : [],
+                
+                series: [44, 55, 13, 43],
+                flightChartOptions: {
+                  labels: ['Ontime', 'Delayed', 'Diverted', 'Cancelled'],
+                  responsive: [{
+                    breakpoint: 480,
+                    options: {
+                      chart: {
+                        width: 200
+                      },
+                      legend: {
+                        position: 'bottom'
+                      }
+                    }
+                  }]
+                }
+              
             }
         },        
         created() {

@@ -19,7 +19,7 @@
                           </sui-card-content>
                           <sui-card-content extra>
                             <sui-icon name="user" />
-                            <router-link :to="{path: '/Carriers/' + carrier['carrier-code']}">
+                            <router-link :to="{path: '/Carriers/' + carrier['code']}">
 								<div>
 									{{ carrier['code'] }}
 									<span slot="right">

@@ -9,6 +9,10 @@ import MonthPicker from 'vue-month-picker'
 import MonthPickerInput from 'vue-month-picker'
 import axios from 'axios'
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+
 axios.defaults.baseURL = 'http://127.0.0.1:5002/';
 Vue.use(MonthPicker)
 Vue.use(MonthPickerInput)
@@ -17,6 +21,8 @@ Vue.use(MonthPickerInput)
 Vue.use(SuiVue);
 Vue.config.productionTip = false;
 Vue.component();
+ 
+Vue.component('apexchart', VueApexCharts)
 
 /* eslint-disable no-new */
 new Vue({
