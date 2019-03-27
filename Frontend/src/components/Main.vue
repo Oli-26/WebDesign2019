@@ -1,7 +1,8 @@
 <template>
 	<div class="Airports">
+		<p>{{ this.month }}</p>
 		<sui-card-group :items-per-row="3" stackable>
-			<AirportCard v-for="airport in airports" :airport="airport" :key="airport.code" />
+			<AirportCard v-for="airport in airports" :airport="airport" :month="`${month}`" :key="airport.code" />
 		</sui-card-group>
     </div>
 </template>
@@ -16,6 +17,9 @@
                 airports: []
             }
         },   
+        props: {
+        	month: null,
+        },
         components: {
         	AirportCard
         },

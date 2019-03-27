@@ -6,7 +6,7 @@
 					{{ carrier['carrier-name'] }} | {{ carrier['carrier-code'] }}
 			</sui-card-header>
 			<sui-divider />
-			<router-link :to="`/Carriers/${carrier['carrier-code']}`">
+			<router-link :to="`/Carriers/${carrier['carrier-code']}`" >
 				<div class="button">
 					View <span slot="right"> > </span>
 				</div>
@@ -31,13 +31,11 @@ export default{
 <style>
 .button {
 	margin:0 auto;
-	width:10em;
-	height:2em;
-	line-height:2em;
+	padding:0px 10px !important;
 	background-color:#a3dadd !important;
 	color:#FFF;
 	font-weight:600;
-	font-size:14pt;
+	font-size:1.5em;
 	border-radius:15%;
 	border:2px solid;
 }

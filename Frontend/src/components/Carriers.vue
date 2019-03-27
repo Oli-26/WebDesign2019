@@ -1,5 +1,6 @@
 <template>
 	<div class="Carriers">
+        <p>{{ this.month }}</p>
         <sui-card-group :items-per-row="3" stackable>
             <CarrierCard v-for="carrier in carriers" :carrier="carrier"" />
         </sui-card-group>
@@ -14,6 +15,9 @@
     export default {
         components: {
             CarrierCard
+        },
+        props: {
+            month: null
         },
         data () {
             return {

@@ -7,7 +7,7 @@
 			</sui-card-header>
 			{{ airport.name }}
 			<sui-divider />
-			<router-link :to="`/Airports/${airport.code}`" :airport="airport">
+			<router-link :to="`/Airports/${airport['code']}`" >
 				<div class="button">
 					{{ airport.code }} <span slot="right"> > </span>
 				</div>

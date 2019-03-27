@@ -1,8 +1,7 @@
 <template>
 	<div class="Carrier">
+    <p> {{ this.month }}</p>
 		<h1> {{ this.carrierName }}</h1>
-		<p>This is carriers page with carrierID</p>
-		<router-link to="/HelloWorld">Routing demonstration</router-link>
 	        
         <sui-card-group :items-per-row="3">         
               
@@ -75,7 +74,9 @@
     import { getAmount } from '../api'
     import { getCarriers } from '../api'
     export default {
-        
+        props: {
+          month: null
+        },
         data () {
             return {
                 carrierName : null,

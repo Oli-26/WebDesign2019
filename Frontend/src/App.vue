@@ -25,11 +25,11 @@
     </div>
     <div id="content">
       <div id="left">
-        <p id="selected_date">{{ date.month }} / {{  date.year  }}</p>
-        <month-picker id="month_input" @change="showDate"></month-picker>
-        
+        <!-- <p id="selected_date">{{ date.month }} / {{  date.year  }}</p> -->
+        <p id="selected_date">Select a month</p>
+          <month-picker id="month_input" @change="showDate"></month-picker>       
       </div>
-      <router-view id="view"/>
+      <router-view id="view" :month="`${date['month']}`"/>
     </div>
   </div>
 </template>
@@ -147,6 +147,10 @@ a:hover {
 
 .month-picker {
   box-shadow: none !important;
+}
+
+.month-picker-year {
+  display:none !important;
 }
 
 .month-picker-year button {

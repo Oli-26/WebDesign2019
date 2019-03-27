@@ -15,6 +15,11 @@
     import CarrierCard from './CarrierCard'
 
     export default {
+        props: {
+            airport: {
+                type: Object,
+            }
+        },
         components: {
             CarrierCard
         },
@@ -22,7 +27,7 @@
             return {
                 name : null,
                 carriers: [],
-                city: null
+                city: null,
             }
         },        
         created() {
