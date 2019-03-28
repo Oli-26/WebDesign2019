@@ -6,7 +6,7 @@
 					{{ carrier['carrier-name'] }} | {{ carrier['carrier-code'] }}
 			</sui-card-header>
 			<sui-divider />
-			<router-link :to="`/Carriers/${carrier['carrier-code']}`" >
+			<router-link :to="`/Carriers/${carrier['carrier-code']}?airportcode=${code}`" >
 				<div class="button">
 					View <span slot="right"> > </span>
 				</div>
@@ -22,6 +22,9 @@ export default{
     carrier: {
       type: Object,
       required: true,
+    },
+    code : {
+      type : String,
     }
   }
 }

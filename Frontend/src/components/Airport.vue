@@ -9,7 +9,7 @@
             <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
         </div>
         <sui-card-group :items-per-row="3" stackable>
-            <CarrierCard v-for="carrier in filteredList" :carrier="carrier" />
+            <CarrierCard v-for="carrier in filteredList" :carrier="carrier" :code="code" />
         </sui-card-group>
 	</div>
 </template>
@@ -33,11 +33,12 @@
                 name : null,
                 carriers: [],
                 city: null,
-                searchQuery: ''
+                searchQuery: '',
+                code : null
             }
         },        
         created() {
-            
+            this.code = this.$route.params.airportCode,
             getAirports(this.$route.params.airportCode)
                 .then(response => {
                     console.log(response.data)
