@@ -39,7 +39,7 @@ export default{
 	color:#FFF;
 	font-weight:600;
 	font-size:14pt;
-	border-radius:15%;
+	border-radius:25px;
 	border:2px solid;
 	transition:.1s;
 }
