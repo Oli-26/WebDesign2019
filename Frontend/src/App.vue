@@ -92,6 +92,11 @@ a:hover {
   z-index:99;
 }
 
+#logo:hover {
+  height:125px;
+  transition:.1s;
+}
+
 #breadcrumb_container{
   position:absolute;
   display: inline-block;
@@ -132,6 +137,14 @@ a:hover {
   top:100px;
   padding:25px;
   z-index:1;
+}
+
+.search {
+    margin-bottom:25px;
+}
+
+.airport_card {
+  text-align: center;
 }
 
 #month_input {

@@ -1,8 +1,11 @@
 <template>
 	<div class="Airports">
 		<p>{{ this.month }}</p>
-		<sui-card-group :items-per-row="3" stackable>
-			<AirportCard v-for="airport in airports" :airport="airport" :month="`${month}`" :key="airport.code" />
+        <div class="search">
+            <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
+        </div>
+		<sui-card-group id="cardgroup" :items-per-row="3">
+			<AirportCard v-for="airport in filteredList" :airport="airport" :month="`${month}`" :key="airport.code" />
 		</sui-card-group>
     </div>
 </template>
@@ -12,13 +15,14 @@
     import AirportCard from './AirportCard'
 
     export default {
-        data () {
+        data() {
             return {
-                airports: []
+                airports: [],
+                searchQuery: ''
             }
         },   
         props: {
-        	month: null,
+        	month: null
         },
         components: {
         	AirportCard
@@ -39,15 +43,21 @@
                         }
                     }
                 }) 
+        },
+        computed: {
+            filteredList(){
+                var self = this
+                if(this.searchQuery){
+                    return this.airports.filter(function(airport) {
+                        return airport.name.toLowerCase().includes(self.searchQuery.toLowerCase());
+                    })
+                }else{
+                   return this.airports;
+                }
+            }
         }  
     }
     
     
     
 </script>
-
-<style>
-.airport_card {
-	text-align: center;
-}
-</style>

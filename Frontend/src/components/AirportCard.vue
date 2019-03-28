@@ -41,6 +41,7 @@ export default{
 	font-size:14pt;
 	border-radius:15%;
 	border:2px solid;
+	transition:.1s;
 }
 
 .button:hover {

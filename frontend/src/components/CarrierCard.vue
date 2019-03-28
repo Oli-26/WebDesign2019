@@ -31,13 +31,16 @@ export default{
 <style>
 .button {
 	margin:0 auto;
-	padding:0px 10px !important;
+	width:10em;
+	height:2em;
+	line-height:2em;
 	background-color:#a3dadd !important;
 	color:#FFF;
 	font-weight:600;
-	font-size:1.5em;
+	font-size:14pt;
 	border-radius:15%;
 	border:2px solid;
+	transition:.1s;
 }
 
 .button:hover {

@@ -1,8 +1,11 @@
 <template>
 	<div class="Carriers">
         <p>{{ this.month }}</p>
+        <div class="search">
+            <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
+        </div>
         <sui-card-group :items-per-row="3" stackable>
-            <CarrierCard v-for="carrier in carriers" :carrier="carrier"" />
+            <CarrierCard v-for="carrier in filteredList" :carrier="carrier"" />
         </sui-card-group>
 	</div>
 </template>
@@ -21,7 +24,8 @@
         },
         data () {
             return {
-                carriers : []
+                carriers : [],
+                searchQuery: ''
             }
         },        
         created() {
@@ -36,6 +40,18 @@
                     }
                     console.log(this.carriers)
                 })    
+        },
+        computed: {
+            filteredList(){
+                var self = this
+                if(this.searchQuery){
+                    return this.carriers.filter(function(carrier) {
+                        return carrier['carrier-name'].toLowerCase().includes(self.searchQuery.toLowerCase());
+                    })
+                }else{
+                   return this.carriers;
+                }
+            }
         }
     }
 </script>
