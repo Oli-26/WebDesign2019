@@ -89,11 +89,12 @@
                 carrierName : null,
                 statisticsURI : null,
                 airportURIs : [],
+                monthInt : null,
 
                 dimmer1Active: true,
                 dimmer2Active: true,
                 dimmer3Active: true,
-                
+              
                 flightsSeries: [],
                 flightChartOptions: {
                   labels: ['Cancelled', 'On time', 'Delayed', 'Diverted'],
@@ -143,7 +144,33 @@
                 }
               
             }
-        },        
+        },
+        computed: {
+            monthsToInt() {
+              var months = {
+                'January' : '01',
+                'February' : '02',
+                'March' : '03',
+                'April' : '04',
+                'May' : '05',
+                'June' : '06',
+                'July' : '07',
+                'August' : '08',
+                'Sepember' : '09',
+                'October' : '10',
+                'November' : '11',
+                'December' : '12'
+            }
+                console.log(this.month)
+                var m = this.month
+                console.log(months.m)
+                return months.m
+            
+            }
+         
+       
+        
+        },
         created() {
             getCarriers(this.$route.params.carrierCode)
                 .then(response => {
@@ -155,7 +182,7 @@
                         
                     }
                 }),
-            getFlights(this.$route.params.carrierCode)
+            getFlights(this.$route.params.carrierCode, "None", this.monthToInt)
                 .then(response => {
                     console.log(response.data)
                     this.flightsSeries.push(response.data["flights-data"]["cancelled"])
@@ -164,7 +191,7 @@
                     this.flightsSeries.push(response.data["flights-data"]["diverted"])
                     this.dimmer1Active = false
                 }),
-            getMinutes(this.$route.params.carrierCode)
+            getMinutes(this.$route.params.carrierCode, "None", this.monthsToInt)
                 .then(response => {
                     console.log(response.data)
                     this.minutesSeries.push(response.data["minutes-data"]["late-aircraft"])
@@ -174,7 +201,7 @@
                     this.minutesSeries.push(response.data["minutes-data"]["nas"])
                     this.dimmer2Active = false
                 }),
-            getAmount(this.$route.params.carrierCode)
+            getAmount(this.$route.params.carrierCode, "None", this.monthsToInt)
                 .then(response => {
                     console.log(response.data)
                     this.amountSeries.push(response.data["amount-data"]["late-aircraft"])
@@ -186,5 +213,6 @@
                 })
             
         }
+        
     }
 </script>
