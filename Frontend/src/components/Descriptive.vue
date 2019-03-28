@@ -23,7 +23,9 @@
       </div>
       <p></p>
       <div>
-      <sui-card-group :items-per-row="2">         
+
+    </div>
+            <sui-card-group :items-per-row="2">         
               
             <sui-card>
               <sui-dimmer :active="dimmer1Active" inverted>
@@ -32,7 +34,7 @@
                 <sui-card-content>
                     <sui-card-header> {{this.selected1}} data </sui-card-header>
                     <div id="chart">
-                      <apexchart type=pie width=350 :options="minutes1ChartOptions" :series="minutes1Series" />
+                      <apexchart type=pie width=350 :options="minutes1ChartOptions" :series="meanSeries" />
                     </div>
                     
                   </sui-card-content>
@@ -51,7 +53,7 @@
                 <sui-card-content>
                     <sui-card-header> {{this.selected2}} data </sui-card-header>
                     <div id="chart">
-                      <apexchart type=pie width=350 :options="minutes2ChartOptions" :series="minutes2Series" />
+                      <apexchart type=pie width=350 :options="minutes2ChartOptions" :series="standardDSeries" />
                     </div>
                     
                   </sui-card-content>
@@ -63,8 +65,6 @@
                     </sui-card-content>
             </sui-card>
         </sui-card-group>
-    </div>
-      
       
   </div>
 
@@ -77,9 +77,12 @@
 
     import { getAirports } from '../api'
     import { getMinutes } from '../api'
+    import { getAverages } from '../api'
     
     export default {
-        
+       props: {
+            month: null,
+       }, 
       name: 'Loading',
       
       
@@ -91,11 +94,12 @@
                 selected1 : null,
                 selected2 : null,
                 airportCode : null,
+                carrierCode : null,
                 
                 dimmer1Active: true,
                 dimmer2Active: true,
                 
-                minutes1Series: [],
+                meanSeries: [],
                 minutes1ChartOptions: {
                   labels: ['Late aircraft', 'Carrier', 'Security', 'Weather', 'National <br/> Aviation <br/> System'],
                   responsive: [{
@@ -111,7 +115,7 @@
                   }]
                 },
                 
-                minutes2Series: [],
+                standardDSeries: [],
                 minutes2ChartOptions: {
                   labels: ['Late aircraft', 'Carrier', 'Security', 'Weather', 'National <br/> Aviation <br/> System'],
                   responsive: [{
@@ -130,8 +134,9 @@
             }
         },        
         created() {
-            airportCode : this.$route.query.airportcode;
-            selected2 : this.$route.query.airportcode;
+            this.airportCode = this.$route.query.airportcode,
+            this.carrierCode = this.$route.params.carrierCode,
+            this.selected1 = this.$route.query.airportcode,
             getAirports()
                 .then(response => {
                     console.log(response.data)
@@ -143,30 +148,68 @@
                         response.data[i].code = response.data[i].uri.substring(10,13);
                         this.airports.push({key : response.data[i].code, value : response.data[i].code, text: response.data[i].name})
                     }
-                }),
-            
-            getMinutes(this.selected1, this.$route.query.airportcode, this.monthToInt)
-                .then(response => {
-                    console.log(response.data)
-                    this.minutes1Series.push(response.data["minutes-data"]["late-aircraft"])
-                    this.minutes1Series.push(response.data["minutes-data"]["carrier"])
-                    this.minutes1Series.push(response.data["minutes-data"]["security"])
-                    this.minutes1Series.push(response.data["minutes-data"]["weather"])
-                    this.minutes1Series.push(response.data["minutes-data"]["nas"])
-                    this.dimmer1Active = false
-                }),
-            getMinutes(this.selected2, this.$route.query.airportcode, this.monthToInt)
-                .then(response => {
-                    console.log(response.data)
-                    this.minutes2Series.push(response.data["minutes-data"]["late-aircraft"])
-                    this.minutes2Series.push(response.data["minutes-data"]["carrier"])
-                    this.minutes2Series.push(response.data["minutes-data"]["security"])
-                    this.minutes2Series.push(response.data["minutes-data"]["weather"])
-                    this.minutes2Series.push(response.data["minutes-data"]["nas"])
-                    this.dimmer2Active = false
                 })
-        }
-       
+        },
+        watch: {
+              selected1(){
+                console.log("code1 = " + this.selected1 + " code2 = " + this.selected2);
+                if(this.selected1 != null && this.selected2 != null){
+                    getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
+                        .then(response => {
+                            console.log(response.data);
+                        })
+                }
+              
+              },
+              selected2(){
+                console.log("code1 = " + this.selected1 + " code2 = " + this.selected2);
+                if(this.selected1 != null && this.selected2 != null){
+                    getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
+                        .then(response => {
+                            console.log(response.data);
+                        })
+                }
+              },
+              month(){
+               if(this.selected1 != null && this.selected2 != null){
+                    getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
+                        .then(response => {
+                            console.log(response.data);
+                        })
+                }
+              
+            }
+            },
+        computed: {
+            monthToInt() {
+              if(this.month){
+                var months = {
+                  "January" : 1,
+                  "February" : 2,
+                  "March" : 3,
+                  "April" : 4,
+                  "May" : 5,
+                  "June" : 6,
+                  "July" : 7,
+                  "August" : 8,
+                  "Sepember" : 9,
+                  "October" : 10,
+                  "November" : 11,
+                  "December" : 12
+                }
+                console.log(this.month)
+                var m = this.month
+                console.log(months[m])
+                return months[m]
+              } else {
+                return "all"
+              }
+            }
+        },
+
+
+  
+          
         
     }
     
