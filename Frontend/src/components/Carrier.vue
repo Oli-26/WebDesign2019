@@ -3,7 +3,7 @@
     <p> {{ this.monthToInt }}</p>
 		<sui-container class="ui segment title_container">
             <h2 is="sui-header">{{ this.carrierName }}</h2>
-    </sui-container>
+        </sui-container>
 	        
         <sui-card-group :items-per-row="3">         
               
@@ -217,7 +217,6 @@
         },
         created() {
             this.loadData();
-            
         }
         
     }
