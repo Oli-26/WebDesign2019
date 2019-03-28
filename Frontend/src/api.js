@@ -107,5 +107,17 @@ export function getAmount(carrierCode, airportCode = "None", month, delayType = 
     
 }
 
+export function getAverages(carrierCode, airportCode1, airportCode2, month){
+    try {
+        if(airportCode == "None"){
+            return  axios.get('/carriers/' + carrierCode + "/statistics/delays/minutes/averages?month="+month)
+        }else{
+            return  axios.get('/carriers/' + carrierCode + "/statistics/delays/minutes/averages?airport-code="+airportCode+"&month="+month)
+        }
+
+    }catch (error) {
+        console.error(error)
+    }
+}
 
 
