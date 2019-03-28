@@ -1,12 +1,12 @@
 <template>
 	<div class="Airport">
-        <sui-container class="ui segment title_container">
-    		<h1 is="sui-header"> {{ city }}</h1>
-            <h2 is="sui-header"> {{ name }}</h2>
-		</sui-container>
         <div class="search">
             <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
         </div>
+        <sui-container class="ui segment title_container">
+            <h1 is="sui-header"> {{ city }}</h1>
+            <h2 is="sui-header"> {{ name }}</h2>
+        </sui-container>
         <sui-card-group :items-per-row="3" stackable>
             <CarrierCard v-for="carrier in filteredList" :carrier="carrier" :code="code" />
         </sui-card-group>

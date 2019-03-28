@@ -132,6 +132,7 @@ a:hover {
   top:100px;
   padding:25px;
   z-index:1;
+  width:calc(100vw - 240px);
 }
 
 .search {
@@ -141,10 +142,14 @@ a:hover {
 .title_container {
   display:inline-block !important;
   width:auto !important;
+  margin-top:0 !important;
 }
 
 .airport_card {
   text-align: center;
+  flex-grow:0;
+  flex-shrink:0 !important;
+  width:30% !important;
 }
 
 #month_input {
