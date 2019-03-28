@@ -26,7 +26,7 @@ Vue.component();
 Vue.component('apexchart', VueApexCharts)
 
 /* eslint-disable no-new */
-var vm = new Vue({
+new Vue({
   el: '#app',
   router,
   components: {App, 'carrier' : Carrier},

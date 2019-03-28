@@ -158,7 +158,7 @@
                   "June" : 6,
                   "July" : 7,
                   "August" : 8,
-                  "Sepember" : 9,
+                  "September" : 9,
                   "October" : 10,
                   "November" : 11,
                   "December" : 12
@@ -174,6 +174,13 @@
         },
         methods: {
           loadData: function (){
+            this.dimmer1Active = true
+            this.dimmer2Active = true
+            this.dimmer3Active = true
+            this.airportURIs.length = 0
+            this.flightsSeries.length = []
+            this.minutesSeries.length = []
+            this.amountSeries.length = []
             getCarriers(this.$route.params.carrierCode)
                 .then(response => {
                     console.log(response.data)
@@ -213,6 +220,11 @@
                     this.amountSeries.push(response.data["amount-data"]["nas"])
                     this.dimmer3Active = false
                 })
+          }
+        },
+        watch: {
+          month: function() {
+            this.loadData();
           }
         },
         created() {

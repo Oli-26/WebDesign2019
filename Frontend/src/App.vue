@@ -220,7 +220,6 @@ export default {
 	methods: {
 		showDate (date) {
 			this.date = date;
-      vm.$refs.carrier.loadData();
 		}
 	}
 }
