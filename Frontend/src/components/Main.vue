@@ -3,7 +3,7 @@
         <div class="search">
             <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
         </div>
-		<sui-card-group class="card_group">
+		<sui-card-group class="card_group" stackable>
 			<AirportCard v-for="airport in filteredList" :airport="airport" :month="`${month}`" :key="airport.code" />
 		</sui-card-group>
     </div>

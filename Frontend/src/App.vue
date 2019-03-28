@@ -149,7 +149,11 @@ a:hover {
   text-align: center;
   flex-grow:0;
   flex-shrink:0 !important;
-  width:30% !important;
+  min-width:30% !important;
+}
+
+.chart {
+  width:350px;
 }
 
 #month_input {

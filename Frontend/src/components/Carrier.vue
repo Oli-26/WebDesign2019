@@ -4,15 +4,15 @@
             <h2 is="sui-header">{{ this.carrierName }}</h2>
         </sui-container>
 	        
-        <sui-card-group :items-per-row="3">         
+        <sui-card-group :items-per-row="3" stackable>         
               
             <sui-card>
               <sui-dimmer :active="dimmer1Active" inverted>
                 <sui-loader>Loading...</sui-loader>
               </sui-dimmer>
                 <sui-card-content>
-                    <sui-card-header> Flights data </sui-card-header>
-                    <div id="chart">
+                    <sui-card-header> General flight statistics </sui-card-header>
+                    <div class="chart">
                       <apexchart type=pie width=350 :options="flightChartOptions" :series="flightsSeries" />
                     </div>
                     
@@ -30,8 +30,8 @@
                 <sui-loader>Loading...</sui-loader>
               </sui-dimmer>
                 <sui-card-content>
-                    <sui-card-header> Delays minutes data </sui-card-header>
-                    <div id="chart">
+                    <sui-card-header> Delay causes (delay in minutes) </sui-card-header>
+                    <div class="chart">
                       <apexchart type=pie width=350 :options="minutesChartOptions" :series="minutesSeries" />
                     </div>
                     
@@ -52,8 +52,8 @@
                 <sui-loader>Loading...</sui-loader>
               </sui-dimmer>
                 <sui-card-content>
-                    <sui-card-header> Delays amount data </sui-card-header>
-                    <div id="chart">
+                    <sui-card-header> Delay causes (number of delays) </sui-card-header>
+                    <div class="chart">
                       <apexchart type=pie width=350 :options="amountChartOptions" :series="amountSeries" />
                     </div>
                     
@@ -122,6 +122,9 @@
                 minutesSeries: [],
                 minutesChartOptions: {
                   labels: ['Late aircraft', 'Carrier', 'Security', 'Weather', 'National <br/> Aviation <br/> System'],
+                  style: {
+                    colors: ['red','blue','purple','black']
+                  },
                   responsive: [{
                     breakpoint: 480,
                     options: {

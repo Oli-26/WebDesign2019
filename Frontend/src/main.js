@@ -9,8 +9,8 @@ import '../semantic/dist/semantic.min.css';
 import MonthPicker from 'vue-month-picker'
 import MonthPickerInput from 'vue-month-picker'
 import axios from 'axios'
-
 import VueApexCharts from 'vue-apexcharts'
+
 Vue.use(VueApexCharts)
 
 
