@@ -27,7 +27,7 @@
       <div id="left">
         <!-- <p id="selected_date">{{ date.month }} / {{  date.year  }}</p> -->
         <p id="selected_date">Select a month</p>
-          <month-picker id="month_input" @change="showDate"></month-picker>       
+          <month-picker id="month_input" v-on:change="showDate" @change="showDate"></month-picker>       
       </div>
       <router-view id="view" :month="`${date['month']}`"/>
     </div>
@@ -35,8 +35,15 @@
 </template>
 
 <script>
+
+
 export default {
-  name: 'App'
+  name: 'App',
+  methods: {
+    upDate() {
+
+    }
+  }
 }
 </script>
 

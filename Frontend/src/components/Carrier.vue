@@ -2,7 +2,7 @@
 	<div class="Carrier">
     <p> {{ this.monthToInt }}</p>
 		<sui-container class="ui segment title_container">
-            <h2 is="sui-header"> {{ this.carrierName }}</h2>
+            <h2 is="sui-header">{{ this.carrierName }}</h2>
     </sui-container>
 	        
         <sui-card-group :items-per-row="3">         
@@ -170,11 +170,9 @@
                 return "all"
               }
             }
-         
-       
-        
         },
-        created() {
+        methods: {
+          loadData: function (){
             getCarriers(this.$route.params.carrierCode)
                 .then(response => {
                     console.log(response.data)
@@ -185,7 +183,7 @@
                         
                     }
                 }),
-            getFlights(this.$route.params.carrierCode, "None", this.monthToInt)
+            getFlights(this.$route.params.carrierCode, this.$route.query.airportcode, this.monthToInt)
                 .then(response => {
                     console.log(response.data)
                     this.flightsSeries.push(response.data["flights-data"]["cancelled"])
@@ -194,7 +192,7 @@
                     this.flightsSeries.push(response.data["flights-data"]["diverted"])
                     this.dimmer1Active = false
                 }),
-            getMinutes(this.$route.params.carrierCode, "None", this.monthToInt)
+            getMinutes(this.$route.params.carrierCode, this.$route.query.airportcode, this.monthToInt)
                 .then(response => {
                     console.log(response.data)
                     this.minutesSeries.push(response.data["minutes-data"]["late-aircraft"])
@@ -204,7 +202,7 @@
                     this.minutesSeries.push(response.data["minutes-data"]["nas"])
                     this.dimmer2Active = false
                 }),
-            getAmount(this.$route.params.carrierCode, "None", this.monthToInt)
+            getAmount(this.$route.params.carrierCode, this.$route.query.airportcode, this.monthToInt)
                 .then(response => {
                     console.log(response.data)
                     this.amountSeries.push(response.data["amount-data"]["late-aircraft"])
@@ -214,6 +212,10 @@
                     this.amountSeries.push(response.data["amount-data"]["nas"])
                     this.dimmer3Active = false
                 })
+          }
+        },
+        created() {
+            this.loadData();
             
         }
         
