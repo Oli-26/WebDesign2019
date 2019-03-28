@@ -17,12 +17,7 @@
                     </div>
                     
                   </sui-card-content>
-                  <sui-card-content extra>
-                    <sui-icon name="user" />
-                    <router-link :to="{path: '/Carriers' }">  
-                      link
-                    </router-link>
-                    </sui-card-content>
+              
             </sui-card>
 
             <sui-card>
@@ -36,13 +31,7 @@
                     </div>
                     
                   </sui-card-content>
-                  <sui-card-content extra>
-                    <sui-icon name="user" />
-                    <router-link :to="{path: '/Carriers' }">  
-                      link
-                    </router-link>
-                    </sui-card-content>
-                
+                 
             </sui-card>
             
             
@@ -58,19 +47,14 @@
                     </div>
                     
                   </sui-card-content>
-                  <sui-card-content extra>
-                    <sui-icon name="user" />
-                    <router-link :to="{path: '/Carriers' }">  
-                      link
-                    </router-link>
-                    </sui-card-content>
+                
                 
             </sui-card>
         </sui-card-group> 
         
         
         <sui-container class="ui segment title_container">
-            <router-link :to="{path: '/carriers/`${carrierCode}`/averages' }"> 
+            <router-link :to="`/Carriers/${carrierCode}/averages?airportCode=${airportCode}`" > 
             Compare
             </router-link>
         </sui-container>
@@ -97,7 +81,8 @@
                 carrierCode : null,
                 statisticsURI : null,
                 airportURIs : [],
-                monthInt : null,
+                
+                airportCode : null,
 
                 dimmer1Active: true,
                 dimmer2Active: true,
@@ -182,6 +167,9 @@
               }
             }
         },
+        created (){
+        
+        },
         methods: {
           loadData: function (){
             this.dimmer1Active = true
@@ -192,11 +180,16 @@
             this.minutesSeries.length = []
             this.amountSeries.length = []
             this.carrierCode = this.$route.params.carrierCode
-              console.log(this.carrierCode)
+            this.airportCode = this.$route.query.airportcode
+            if(this.airportCode == "undefined"){
+                this.airportCode = "None"
+            }
+            console.log(this.carrierCode)
             getCarriers(this.$route.params.carrierCode)
                 .then(response => {
-                    console.log(response.data)
+                    
                     this.carrierName = response.data['carrier-name']
+                    console.log("carrier name = " + this.carrierName)
                     this.carrierURI = response.data["statistics-uri"]
                     for(var i = 0; i < response.data["airport-uris"].length; i++){
                         this.airportURIs.push(response.data["airport-uris"][i])
