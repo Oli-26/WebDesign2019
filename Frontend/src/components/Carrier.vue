@@ -1,6 +1,6 @@
 <template>
 	<div class="Carrier">
-    <p> {{ this.month }}</p>
+    <p> {{ this.monthToInt }}</p>
 		<sui-container class="ui segment title_container">
             <h2 is="sui-header"> {{ this.carrierName }}</h2>
     </sui-container>
@@ -146,26 +146,29 @@
             }
         },
         computed: {
-            monthsToInt() {
-              var months = {
-                'January' : '01',
-                'February' : '02',
-                'March' : '03',
-                'April' : '04',
-                'May' : '05',
-                'June' : '06',
-                'July' : '07',
-                'August' : '08',
-                'Sepember' : '09',
-                'October' : '10',
-                'November' : '11',
-                'December' : '12'
-            }
+            monthToInt() {
+              if(this.month){
+                var months = {
+                  "January" : 1,
+                  "February" : 2,
+                  "March" : 3,
+                  "April" : 4,
+                  "May" : 5,
+                  "June" : 6,
+                  "July" : 7,
+                  "August" : 8,
+                  "Sepember" : 9,
+                  "October" : 10,
+                  "November" : 11,
+                  "December" : 12
+                }
                 console.log(this.month)
                 var m = this.month
-                console.log(months.m)
-                return months.m
-            
+                console.log(months[m])
+                return months[m]
+              } else {
+                return "all"
+              }
             }
          
        
@@ -191,7 +194,7 @@
                     this.flightsSeries.push(response.data["flights-data"]["diverted"])
                     this.dimmer1Active = false
                 }),
-            getMinutes(this.$route.params.carrierCode, "None", this.monthsToInt)
+            getMinutes(this.$route.params.carrierCode, "None", this.monthToInt)
                 .then(response => {
                     console.log(response.data)
                     this.minutesSeries.push(response.data["minutes-data"]["late-aircraft"])
@@ -201,7 +204,7 @@
                     this.minutesSeries.push(response.data["minutes-data"]["nas"])
                     this.dimmer2Active = false
                 }),
-            getAmount(this.$route.params.carrierCode, "None", this.monthsToInt)
+            getAmount(this.$route.params.carrierCode, "None", this.monthToInt)
                 .then(response => {
                     console.log(response.data)
                     this.amountSeries.push(response.data["amount-data"]["late-aircraft"])
