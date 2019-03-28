@@ -4,7 +4,7 @@
             <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
         </div>
         <sui-card-group :items-per-row="3" stackable>
-            <CarrierCard v-for="carrier in filteredList" :carrier="carrier"" />
+            <CarrierCard v-for="carrier in filteredList" :carrier="carrier" />
         </sui-card-group>
 	</div>
 </template>

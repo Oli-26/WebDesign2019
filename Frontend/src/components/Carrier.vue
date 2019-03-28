@@ -68,6 +68,13 @@
             </sui-card>
         </sui-card-group> 
         
+        
+        <sui-container class="ui segment title_container">
+            <router-link :to="{path: '/carriers/`${carrierCode}`/averages' }"> 
+            Compare
+            </router-link>
+        </sui-container>
+        
     
     </div>
 </template>
@@ -87,6 +94,7 @@
         data () {
             return {
                 carrierName : null,
+                carrierCode : null,
                 statisticsURI : null,
                 airportURIs : [],
                 monthInt : null,
@@ -180,6 +188,8 @@
             this.flightsSeries.length = []
             this.minutesSeries.length = []
             this.amountSeries.length = []
+            this.carrierCode = this.$route.params.carrierCode
+              console.log(this.carrierCode)
             getCarriers(this.$route.params.carrierCode)
                 .then(response => {
                     console.log(response.data)
