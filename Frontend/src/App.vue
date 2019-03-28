@@ -140,11 +140,12 @@ a:hover {
 }
 
 .search {
-    margin-bottom:25px;
+  margin-bottom:25px;
 }
 
 .title_container {
-    width:100% !important;
+  display:inline-block !important;
+  width:auto !important;
 }
 
 .airport_card {

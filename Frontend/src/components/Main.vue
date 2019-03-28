@@ -47,9 +47,10 @@
         computed: {
             filteredList(){
                 var self = this
+                var list = [];
                 if(this.searchQuery){
                     return this.airports.filter(function(airport) {
-                        return airport.name.toLowerCase().includes(self.searchQuery.toLowerCase());
+                        return airport.name.toLowerCase().includes(self.searchQuery.toLowerCase()) | airport.city.toLowerCase().includes(self.searchQuery.toLowerCase()) | airport.code.toLowerCase().includes(self.searchQuery.toLowerCase());
                     })
                 }else{
                    return this.airports;

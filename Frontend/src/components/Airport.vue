@@ -57,7 +57,7 @@
                 var self = this
                 if(this.searchQuery){
                     return this.carriers.filter(function(carrier) {
-                        return carrier['carrier-name'].toLowerCase().includes(self.searchQuery.toLowerCase());
+                        return carrier['carrier-name'].toLowerCase().includes(self.searchQuery.toLowerCase()) | carrier['carrier-code'].toLowerCase().includes(self.searchQuery.toLowerCase());
                     })
                 }else{
                    return this.carriers;
