@@ -6,7 +6,12 @@
 					{{ carrier['carrier-name'] }} | {{ carrier['carrier-code'] }}
 			</sui-card-header>
 			<sui-divider />
-			<router-link :to="`/Carriers/${carrier['carrier-code']}?airportcode=${code}`" >
+			<router-link v-if="code" :to="`/Carriers/${carrier['carrier-code']}?airportcode=${code}`" >
+				<div class="button">
+					View <span slot="right"> > </span>
+				</div>
+			</router-link>
+			<router-link v-else :to="`/Carriers/${carrier['carrier-code']}`" >
 				<div class="button">
 					View <span slot="right"> > </span>
 				</div>
@@ -26,7 +31,7 @@ export default{
     code : {
       type : String,
     }
-  }
+  },
 }
 
 </script>

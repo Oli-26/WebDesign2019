@@ -1,6 +1,5 @@
 <template>
 	<div class="Carriers">
-        <p>{{ this.month }}</p>
         <div class="search">
             <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
         </div>

@@ -1,6 +1,5 @@
 <template>
 	<div class="Airport">
-        <p>{{ this.month }}</p>
         <sui-container class="ui segment title_container">
     		<h1 is="sui-header"> {{ city }}</h1>
             <h2 is="sui-header"> {{ name }}</h2>
