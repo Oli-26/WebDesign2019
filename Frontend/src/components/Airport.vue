@@ -51,13 +51,3 @@
     
     
 </script>
-
-<style>
-.title_container {
-    width:100% !important;
-}
-
-.airport_card {
-    text-align: center;
-}
-</style>

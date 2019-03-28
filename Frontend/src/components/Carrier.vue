@@ -1,12 +1,16 @@
 <template>
 	<div class="Carrier">
     <p> {{ this.month }}</p>
-		<h1> {{ this.carrierName }}</h1>
+		<sui-container class="ui segment title_container">
+            <h2 is="sui-header"> {{ this.carrierName }}</h2>
+    </sui-container>
 	        
         <sui-card-group :items-per-row="3">         
               
             <sui-card>
-               
+              <sui-dimmer :active="dimmer1Active" inverted>
+                <sui-loader>Loading...</sui-loader>
+              </sui-dimmer>
                 <sui-card-content>
                     <sui-card-header> Flights data </sui-card-header>
                     <div id="chart">
@@ -20,11 +24,12 @@
                       link
                     </router-link>
                     </sui-card-content>
-                
             </sui-card>
 
             <sui-card>
-               
+               <sui-dimmer :active="dimmer2Active" inverted>
+                <sui-loader>Loading...</sui-loader>
+              </sui-dimmer>
                 <sui-card-content>
                     <sui-card-header> Delays minutes data </sui-card-header>
                     <div id="chart">
@@ -44,7 +49,9 @@
             
             
                       <sui-card>
-               
+               <sui-dimmer :active="dimmer3Active" inverted>
+                <sui-loader>Loading...</sui-loader>
+              </sui-dimmer>
                 <sui-card-content>
                     <sui-card-header> Delays amount data </sui-card-header>
                     <div id="chart">
@@ -82,6 +89,10 @@
                 carrierName : null,
                 statisticsURI : null,
                 airportURIs : [],
+
+                dimmer1Active: true,
+                dimmer2Active: true,
+                dimmer3Active: true,
                 
                 flightsSeries: [],
                 flightChartOptions: {
@@ -134,6 +145,16 @@
             }
         },        
         created() {
+            getCarriers(this.$route.params.carrierCode)
+                .then(response => {
+                    console.log(response.data)
+                    this.carrierName = response.data['carrier-name']
+                    this.carrierURI = response.data["statistics-uri"]
+                    for(var i = 0; i < response.data["airport-uris"].length; i++){
+                        this.airportURIs.push(response.data["airport-uris"][i])
+                        
+                    }
+                }),
             getFlights(this.$route.params.carrierCode)
                 .then(response => {
                     console.log(response.data)
@@ -141,6 +162,7 @@
                     this.flightsSeries.push(response.data["flights-data"]["ontime"])
                     this.flightsSeries.push(response.data["flights-data"]["delayed"])
                     this.flightsSeries.push(response.data["flights-data"]["diverted"])
+                    this.dimmer1Active = false
                 }),
             getMinutes(this.$route.params.carrierCode)
                 .then(response => {
@@ -150,6 +172,7 @@
                     this.minutesSeries.push(response.data["minutes-data"]["security"])
                     this.minutesSeries.push(response.data["minutes-data"]["weather"])
                     this.minutesSeries.push(response.data["minutes-data"]["nas"])
+                    this.dimmer2Active = false
                 }),
             getAmount(this.$route.params.carrierCode)
                 .then(response => {
@@ -159,24 +182,9 @@
                     this.amountSeries.push(response.data["amount-data"]["security"])
                     this.amountSeries.push(response.data["amount-data"]["weather"])
                     this.amountSeries.push(response.data["amount-data"]["nas"])
-                }),
-            getCarriers(this.$route.params.carrierCode)
-                .then(response => {
-                    console.log(response.data)
-                    this.carrierName = response.data.name
-                    this.carrierURI = response.data["statistics-uri"]
-                    for(var i = 0; i < response.data["airport-uris"].length; i++){
-                        this.airportURIs.push(response.data["airport-uris"][i])
-                        
-                    }
+                    this.dimmer3Active = false
                 })
             
         }
     }
 </script>
-
-<style>
-.airport_card {
-    text-align: center;
-}
-</style>
