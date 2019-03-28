@@ -1,11 +1,15 @@
 <template>
 	<div class="Airport">
+        <p>{{ this.month }}</p>
         <sui-container class="ui segment title_container">
     		<h1 is="sui-header"> {{ city }}</h1>
             <h2 is="sui-header"> {{ name }}</h2>
 		</sui-container>
+        <div class="search">
+            <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
+        </div>
         <sui-card-group :items-per-row="3" stackable>
-            <CarrierCard v-for="carrier in carriers" :carrier="carrier" />
+            <CarrierCard v-for="carrier in filteredList" :carrier="carrier" />
         </sui-card-group>
 	</div>
 </template>
@@ -16,6 +20,7 @@
 
     export default {
         props: {
+            month: null,
             airport: {
                 type: Object,
             }
@@ -28,6 +33,7 @@
                 name : null,
                 carriers: [],
                 city: null,
+                searchQuery: ''
             }
         },        
         created() {
@@ -45,6 +51,18 @@
                         
                     }
                 }) 
+        },
+        computed: {
+            filteredList(){
+                var self = this
+                if(this.searchQuery){
+                    return this.carriers.filter(function(carrier) {
+                        return carrier['carrier-name'].toLowerCase().includes(self.searchQuery.toLowerCase());
+                    })
+                }else{
+                   return this.carriers;
+                }
+            }
         }  
     }
     
