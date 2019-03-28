@@ -208,7 +208,6 @@ class Utility():
             relation1 = Relation_table.query.filter_by(airportID = airport1.id, carrierID = realCarrier.id, timeID = t.id).first()
             relation2 = Relation_table.query.filter_by(airportID = airport2.id, carrierID = realCarrier.id, timeID = t.id).first()
             if relation1 is not None and relation2 is not None:
-                print("Looping")
                 statistics1 = Statistics.query.filter_by(relationID = relation1.id).first()
                 statistics2 = Statistics.query.filter_by(relationID = relation2.id).first()
                 delay1 = Delays.query.filter_by(id = statistics1.delayID).first()
