@@ -27,25 +27,13 @@
       <div id="left">
         <!-- <p id="selected_date">{{ date.month }} / {{  date.year  }}</p> -->
         <p id="selected_date">Select a month</p>
-          <month-picker id="month_input" v-on:change="showDate" @change="showDate"></month-picker>       
+          <month-picker id="month_input" @change="showDate"></month-picker>       
       </div>
       <router-view id="view" :month="`${date['month']}`"/>
     </div>
   </div>
 </template>
 
-<script>
-
-
-export default {
-  name: 'App',
-  methods: {
-    upDate() {
-
-    }
-  }
-}
-</script>
 
 <style>
 a {
@@ -217,6 +205,7 @@ a:hover {
 import MonthPicker from 'vue-month-picker'
 
 export default {
+  name: 'app',
 	data() {
 		return {
 			date: {
@@ -230,7 +219,8 @@ export default {
 
 	methods: {
 		showDate (date) {
-			this.date = date
+			this.date = date;
+      vm.$refs.carrier.loadData();
 		}
 	}
 }

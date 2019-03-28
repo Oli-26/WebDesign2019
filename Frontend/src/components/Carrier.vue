@@ -81,6 +81,7 @@
     import { getAmount } from '../api'
     import { getCarriers } from '../api'
     export default {
+        name: "carrier",
         props: {
           month: null
         },
