@@ -32,7 +32,7 @@
                 <sui-loader>Loading...</sui-loader>
               </sui-dimmer>
                 <sui-card-content>
-                    <sui-card-header> {{this.selected1}} data </sui-card-header>
+                    <sui-card-header> Mean minutes </sui-card-header>
                     <div id="chart">
                       <apexchart type=pie width=350 :options="minutes1ChartOptions" :series="meanSeries" />
                     </div>
@@ -51,7 +51,7 @@
                 <sui-loader>Loading...</sui-loader>
               </sui-dimmer>
                 <sui-card-content>
-                    <sui-card-header> {{this.selected2}} data </sui-card-header>
+                    <sui-card-header> Standard deviation minutes </sui-card-header>
                     <div id="chart">
                       <apexchart type=pie width=350 :options="minutes2ChartOptions" :series="standardDSeries" />
                     </div>
@@ -156,7 +156,25 @@
                 if(this.selected1 != null && this.selected2 != null){
                     getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
                         .then(response => {
-                            console.log(response.data);
+                            this.meanSeries = []
+                            this.standardDSeries = []
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["late-aircraft"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["carrier"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["security"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["weather"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["nas"])
+                            this.dimmer1Active = false    
+                            
+                            
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["late-aircraft"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["carrier"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["security"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["weather"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["nas"])
+                            this.dimmer2Active = false    
+                            
+                            
+                            
                         })
                 }
               
@@ -166,14 +184,8 @@
                 if(this.selected1 != null && this.selected2 != null){
                     getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
                         .then(response => {
-                            console.log(response.data);
-                        })
-                }
-              },
-              month(){
-               if(this.selected1 != null && this.selected2 != null){
-                    getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
-                        .then(response => {
+                            this.meanSeries = []
+                            this.standardDSeries = []
                             this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["late-aircraft"])
                             this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["carrier"])
                             this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["security"])
@@ -182,15 +194,41 @@
                             this.dimmer1Active = false    
                             
                             
-                            this.standardDSeries.push(response.data["mean"]["standard-data"]["late-aircraft"])
-                            this.standardDSeries.push(response.data["mean"]["standard-data"]["carrier"])
-                            this.standardDSeries.push(response.data["mean"]["standard-data"]["security"])
-                            this.standardDSeries.push(response.data["mean"]["standard-data"]["weather"])
-                            this.standardDSeries.push(response.data["mean"]["standard-data"]["nas"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["late-aircraft"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["carrier"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["security"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["weather"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["nas"])
                             this.dimmer2Active = false    
                             
                             
-                            console.log(this.meanSeries)
+                            
+                        })
+                }
+              },
+              month(){
+               if(this.selected1 != null && this.selected2 != null){
+                    getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
+                        .then(response => {
+                            this.meanSeries = []
+                            this.standardDSeries = []
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["late-aircraft"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["carrier"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["security"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["weather"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["nas"])
+                            this.dimmer1Active = false    
+                            
+                            
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["late-aircraft"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["carrier"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["security"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["weather"])
+                            this.standardDSeries.push(response.data["standard-deviation"]["standard-data"]["nas"])
+                            this.dimmer2Active = false    
+                            
+                            
+                            
                         })
                 }
               
