@@ -298,4 +298,4 @@ class Utility():
         }
         if month is None:
             return {"month" : "all", "flights-data-standard-deviation" : dict}
-        return {"month" : Time.getMonthText(month), "flights-data" : dict}
+        return {"month" : Time.getMonthText(month), "standard-data" : dict}
