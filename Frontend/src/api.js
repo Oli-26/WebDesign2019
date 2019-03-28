@@ -77,7 +77,7 @@ export function getFlights(carrierCode, airportCode, month) {
 
 
 
-export function getMinutes(carrierCode, airportCode = "None", month = "None", delayType = "None") {
+export function getMinutes(carrierCode, airportCode, month, delayType = "None") {
     try {
         if(airportCode == "None"){
             return  axios.get('/carriers/' + carrierCode + "/statistics/delays/minutes?month="+month)
@@ -93,7 +93,7 @@ export function getMinutes(carrierCode, airportCode = "None", month = "None", de
 
 
 
-export function getAmount(carrierCode, airportCode = "None", month = "None", delayType = "None") {
+export function getAmount(carrierCode, airportCode, month, delayType = "None") {
     try {
         if(airportCode == "None"){
             return  axios.get('/carriers/' + carrierCode + "/statistics/delays/amount?month="+month)
