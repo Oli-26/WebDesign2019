@@ -174,12 +174,28 @@
                if(this.selected1 != null && this.selected2 != null){
                     getAverages(this.carrierCode, this.selected1, this.selected2, this.monthToInt)
                         .then(response => {
-                            console.log(response.data);
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["late-aircraft"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["carrier"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["security"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["weather"])
+                            this.meanSeries.push(response.data["mean"]["minutes-data-mean"]["nas"])
+                            this.dimmer1Active = false    
+                            
+                            
+                            this.standardDSeries.push(response.data["mean"]["standard-data"]["late-aircraft"])
+                            this.standardDSeries.push(response.data["mean"]["standard-data"]["carrier"])
+                            this.standardDSeries.push(response.data["mean"]["standard-data"]["security"])
+                            this.standardDSeries.push(response.data["mean"]["standard-data"]["weather"])
+                            this.standardDSeries.push(response.data["mean"]["standard-data"]["nas"])
+                            this.dimmer2Active = false    
+                            
+                            
+                            console.log(this.meanSeries)
                         })
                 }
               
             }
-            },
+        },
         computed: {
             monthToInt() {
               if(this.month){

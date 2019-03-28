@@ -61,7 +61,6 @@ export function getStatistics(carrierCode, airportCode = "None")  {
 
 
 export function getFlights(carrierCode, airportCode = "None", month) {
-    console.log("month = " + month)
     try {
         if(airportCode == "None"){
             return  axios.get('/carriers/' + carrierCode + "/statistics/flights?month="+month)
