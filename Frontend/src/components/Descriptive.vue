@@ -38,12 +38,7 @@
                     </div>
                     
                   </sui-card-content>
-                  <sui-card-content extra>
-                    <sui-icon name="user" />
-                    <router-link :to="{path: '/Carriers' }">  
-                      link
-                    </router-link>
-                    </sui-card-content>
+                  
             </sui-card>
           
             <sui-card>
@@ -57,12 +52,9 @@
                     </div>
                     
                   </sui-card-content>
-                  <sui-card-content extra>
-                    <sui-icon name="user" />
-                    <router-link :to="{path: '/Carriers' }">  
-                      link
-                    </router-link>
-                    </sui-card-content>
+                  
+                    
+                    
             </sui-card>
         </sui-card-group>
       
