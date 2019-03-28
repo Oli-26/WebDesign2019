@@ -4,6 +4,7 @@ import Main from '@/components/Main'
 import Carriers from '@/components/carriers'
 import Airport from '@/components/airport'
 import Carrier from '@/components/carrier'
+import Descriptive from '@/components/descriptive'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/carriers/:carrierCode',
       name: 'Carrier',
       component: Carrier
+    },
+    {
+      path: '/carriers/:carrierCode/averages',
+      name: 'Averages',
+      component: Descriptive
     }
   ]
 })
