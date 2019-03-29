@@ -1,7 +1,7 @@
 <template>
 	<sui-card class="carrier_card" >
 		<sui-card-content>
-			<sui-image class="carrier_image" :src="`../static/images/carriers/${carrier['carrier-code']}.png`" /><br /><br />
+			<sui-image class="carrier_image" :src="`../static/carriers/${carrier['carrier-code']}.png`" /><br /><br />
 			<sui-card-header>
 					{{ carrier['carrier-name'] }}<br />
 					{{ carrier['carrier-code'] }}
