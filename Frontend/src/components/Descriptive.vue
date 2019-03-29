@@ -1,84 +1,77 @@
 <template lang="html">
   <div>
-        <div class="dropdown1">
-          <sui-dropdown 
-            
-            fluid
-            :options="airports"
-            placeholder="Select Primary Airport"
-            search
-            selection
-            v-model="selected1"
-          />    
-        </div>
-        <div class="dropdown2">
-          <sui-dropdown
-            fluid
-            :options="airports"
-            placeholder="Select Secondary Airport"
-            search
-            selection
-            v-model="selected2"
-          />
-      </div>
-      <p></p>
-      <div>
-
-    </div>
-            <sui-card-group :items-per-row="2">         
-              
-            <sui-card>
-              <sui-dimmer :active="dimmer1Active" inverted>
-                <sui-loader>Loading...</sui-loader>
-              </sui-dimmer>
-                <sui-card-content>
-                    <sui-card-header> Mean minutes </sui-card-header>
-                    <div id="chart">
-                      <apexchart type=pie width=350 :options="minutes1ChartOptions" :series="meanSeries" />
-                    </div>
-                    
-                  </sui-card-content>
-                  
-            </sui-card>
+    <sui-segment class="title_container">
+      <h1 is="sui-header">Compare Airports </h1>
+      <p>Select airports to compare statistics for {{ this.$route.query.airportCode }}</p>
+    </sui-segment>
+    <sui-segment>
+      <div class="uidropdown1">
+        <label>Airport 1</label>
+        <sui-dropdown 
           
-            <sui-card>
-              <sui-dimmer :active="dimmer2Active" inverted>
-                <sui-loader>Loading...</sui-loader>
-              </sui-dimmer>
-                <sui-card-content>
-                    <sui-card-header> Standard deviation minutes </sui-card-header>
-                    <div id="chart">
-                      <apexchart type=pie width=350 :options="minutes2ChartOptions" :series="standardDSeries" />
-                    </div>
-                    
-                  </sui-card-content>
-                  
-                    
-                    
-            </sui-card>
-        </sui-card-group>
-      
-  </div>
+          fluid
+          :options="airports"
+          placeholder="Select Primary Airport"
+          search
+          selection
+          v-model="selected1"
+        />
+      </div>
+      <div class="dropdown2">
+        <label>Airport 2</label>
+        <sui-dropdown
+          fluid
+          :options="airports"
+          placeholder="Select Secondary Airport"
+          search
+          selection
+          v-model="selected2"
+        />
+      </div>
+    </sui-segment>
 
+    <sui-card-group :items-per-row="2">                       
+      <sui-card style="z-index:1 !important;">
+        <sui-dimmer :active="dimmer1Active" inverted>
+          <sui-loader>Loading...</sui-loader>
+        </sui-dimmer>
+        <sui-card-content>
+          <sui-card-header> Mean minutes </sui-card-header>
+          <div id="chart">
+            <apexchart type=pie width=350 :options="minutes1ChartOptions" :series="meanSeries" />
+          </div>                    
+        </sui-card-content>
+      </sui-card>
+      
+      <sui-card style="z-index:1 !important;">
+        <sui-dimmer :active="dimmer2Active" inverted>
+          <sui-loader>Loading...</sui-loader>
+        </sui-dimmer>
+        <sui-card-content>
+          <sui-card-header> Standard deviation minutes </sui-card-header>
+          <div id="chart">
+            <apexchart type=pie width=350 :options="minutes2ChartOptions" :series="standardDSeries" />
+          </div>   
+        </sui-card-content>   
+      </sui-card>
+    </sui-card-group>
+  </div>
 </template>
 
 
 
 
 <script>
-
     import { getAirports } from '../api'
     import { getMinutes } from '../api'
     import { getAverages } from '../api'
     
     export default {
-       props: {
-            month: null,
-       }, 
+      props: {
+        month: null,
+      }, 
       name: 'Loading',
-      
-      
-        data () {
+      data () {
             return {
 
                 name : "",
@@ -252,12 +245,5 @@
               }
             }
         },
-
-
-  
-          
-        
-    }
-    
-    
+    }    
 </script>

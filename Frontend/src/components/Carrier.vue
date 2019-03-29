@@ -1,7 +1,14 @@
 <template>
 	<div class="Carrier">
 		<sui-container class="ui segment title_container">
-            <h2 is="sui-header">{{ this.carrierName }}</h2>
+            <h2 is="sui-header">Statistics | {{ this.carrierName }}</h2>
+            <h5 is="sui-header" v-if="airportCode != null">Airport: {{ this.airportCode }}</h5>
+            <router-link v-if="airportCode" :to="`/Carriers/${carrierCode}/averages?airportCode=${airportCode}`" > 
+              <button class="ui right floated button">Compare airports</button>
+            </router-link>
+            <router-link v-else :to="`/Carriers/${carrierCode}/averages`" > 
+              <button class="ui right floated button">Compare Airports</button>
+            </router-link>
         </sui-container>
 	        
         <sui-card-group :items-per-row="3" stackable>         
@@ -53,36 +60,42 @@
         </sui-card-group> 
         
         
-        <sui-container class="ui segment title_container">
-            <router-link :to="`/Carriers/${carrierCode}/averages?airportCode=${airportCode}`" > 
-            Compare
-            </router-link>
+        <sui-container class="ui">
+            
         </sui-container>
         
     
     </div>
 </template>
 
+<style>
+button {
+  height:auto;
+  padding:0px !important;
+  color:#397c7f;
+}
+</style>
+
 
 <script>
-    
+    import { getCarriers } from '../api'
     import { getFlights } from '../api'
     import { getMinutes } from '../api'
     import { getAmount } from '../api'
-    import { getCarriers } from '../api'
+
     export default {
         name: "carrier",
         props: {
-          month: null
+          month: null,
         },
         data () {
             return {
-                carrierName : null,
                 carrierCode : null,
+                carrierName : null,
                 statisticsURI : null,
                 airportURIs : [],
                 
-                airportCode : null,
+                airportCode: null,
 
                 dimmer1Active: true,
                 dimmer2Active: true,
@@ -181,13 +194,12 @@
             this.amountSeries.length = []
             this.carrierCode = this.$route.params.carrierCode
             this.airportCode = this.$route.query.airportcode
-            if(this.airportCode == "undefined"){
-                this.airportCode = "None"
-            }
+            // if(this.airportCode == "undefined"){
+            //     this.airportCode = "None"
+            // }
             console.log(this.carrierCode)
             getCarriers(this.$route.params.carrierCode)
                 .then(response => {
-                    
                     this.carrierName = response.data['carrier-name']
                     console.log("carrier name = " + this.carrierName)
                     this.carrierURI = response.data["statistics-uri"]
@@ -195,7 +207,7 @@
                         this.airportURIs.push(response.data["airport-uris"][i])
                         
                     }
-                }),
+                })
             getFlights(this.$route.params.carrierCode, this.$route.query.airportcode, this.monthToInt)
                 .then(response => {
                     console.log(response.data)
@@ -204,7 +216,7 @@
                     this.flightsSeries.push(response.data["flights-data"]["delayed"])
                     this.flightsSeries.push(response.data["flights-data"]["diverted"])
                     this.dimmer1Active = false
-                }),
+                })
             getMinutes(this.$route.params.carrierCode, this.$route.query.airportcode, this.monthToInt)
                 .then(response => {
                     console.log(response.data)
@@ -214,7 +226,7 @@
                     this.minutesSeries.push(response.data["minutes-data"]["weather"])
                     this.minutesSeries.push(response.data["minutes-data"]["nas"])
                     this.dimmer2Active = false
-                }),
+                })
             getAmount(this.$route.params.carrierCode, this.$route.query.airportcode, this.monthToInt)
                 .then(response => {
                     console.log(response.data)

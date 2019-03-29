@@ -11,10 +11,6 @@ export function getAirports(airportCode = "None")  {
     } catch (error) {
         console.error(error)
     }
-
-
-        
-        
 }
 
 
@@ -40,11 +36,6 @@ export function getCarriers(carrierCode = "None", airportCode = "None")  {
     } catch (error) {
         console.error(error)
     }
-        
-      
-        
-        
-        
         
 }
 
