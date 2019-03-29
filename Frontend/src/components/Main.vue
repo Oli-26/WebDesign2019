@@ -1,18 +1,16 @@
 <template>
 	<div class="Airports">
-        <div>
-            <sui-segment class="title_container" >
-                <h1 is="sui-header" style="display:inline">Airports</h1>
-                <div class="search">
-                    <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
-                </div>
-            </sui-segment>
+        <sui-segment class="title_container" >
+            <h1 is="sui-header" style="display:inline">Airports</h1>
+            <div class="search">
+                <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
+            </div>
+        </sui-segment>
+    
         
-            
-    		<sui-card-group class="card_group" stackable>
-    			<AirportCard v-for="airport in filteredList" :airport="airport" :month="`${month}`" :key="airport.code" />
-    		</sui-card-group>
-        </div>
+		<sui-card-group class="card_group" stackable>
+			<AirportCard v-for="airport in filteredList" :airport="airport" :month="`${month}`" :key="airport.code" />
+		</sui-card-group>
     </div>
 </template>
 

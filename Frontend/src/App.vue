@@ -44,6 +44,26 @@ a:hover {
   color:#8ac3c6 !important;
 }
 
+.button {
+  margin:0 auto;
+  width:10em;
+  height:2em;
+  line-height:2em;
+  background-color:#a3dadd !important;
+  color:#FFF;
+  font-weight:600;
+  font-size:14pt;
+  border-radius:25px;
+  border:2px solid;
+  transition:.1s;
+}
+
+.button:hover {
+  background-color:#FFF !important;
+  color:#397c7f;
+  border:2px solid #397c7f;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -138,24 +158,56 @@ a:hover {
 .search {
   /*margin-bottom:25px;*/
   display:inline-block;
+  float:right;
 }
 
 .title_container {
   display:inline-block !important;
-  width: !important;
-  min-width:20% !important;
+  width:calc(100vw - 240px - 50px - 5*14px) !important;
   margin-top:0 !important;
+}
+
+.title_container_carriers {
+  display:inline-block !important;
+  width:calc(100vw - 240px - 50px - 3*14px) !important;
+  margin-top:0 !important;
+}
+
+.title_container_descriptive {
+  display:inline-block !important;
+  width:calc(100vw - 240px - 150px - 2*14px) !important;
+  margin-top:0 !important;
+}
+
+.card_group {
+  width:calc(100vw - 240px - 50px) !important;
 }
 
 .airport_card {
   text-align: center;
   flex-grow:0;
   flex-shrink:0 !important;
-  min-width:30% !important;
+  width:calc(33% - 2*14px) !important;
 }
 
-.chart {
-  width:350px;
+.carrier_card {
+  text-align: center;
+  flex-grow:0 !important;
+  flex-shrink:0 !important;
+  padding:0 !important;
+  width:calc(33% - 2*14px) !important;
+}
+
+.statistics_card {
+  text-align: center;
+  flex-grow:0;
+  flex-shrink:0 !important;
+  width:calc(33% - 2*14px) !important;
+  height:200px;
+}
+
+.statistics_card>sui-card-header {
+  text-align:left;
 }
 
 #month_input {

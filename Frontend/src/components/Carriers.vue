@@ -1,10 +1,13 @@
 <template>
 	<div class="Carriers">
-        <div class="search">
-            <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
-        </div>
-        <sui-card-group :items-per-row="3" stackable>
-            <CarrierCard v-for="carrier in filteredList" :carrier="carrier" :carrierName="carriers['carrier-name']" />
+        <sui-segment class="title_container_carriers" >
+            <h1 is="sui-header" style="display:inline">Carriers</h1>
+            <div class="search">
+                <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
+            </div>
+        </sui-segment>
+        <sui-card-group class="card_group" :items-per-row="3" stackable>
+            <CarrierCard v-for="carrier in filteredList" :carrier="carrier" />
         </sui-card-group>
 	</div>
 </template>

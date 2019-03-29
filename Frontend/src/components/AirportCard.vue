@@ -1,5 +1,5 @@
 <template>
-	<sui-card class="airport_card" raised>
+	<sui-card class="airport_card">
 		<sui-card-content>
 			<sui-image src="static/images/airport_card.png" size="large" /><br /><br />
 			<sui-card-header>
@@ -28,26 +28,3 @@ export default{
 }
 
 </script>
-
-<style>
-.button {
-	margin:0 auto;
-	width:10em;
-	height:2em;
-	line-height:2em;
-	background-color:#a3dadd !important;
-	color:#FFF;
-	font-weight:600;
-	font-size:14pt;
-	border-radius:25px;
-	border:2px solid;
-	transition:.1s;
-}
-
-.button:hover {
-	background-color:#FFF !important;
-	color:#397c7f;
-	border:2px solid #397c7f;
-}
-
-</style>

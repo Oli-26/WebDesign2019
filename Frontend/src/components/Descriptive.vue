@@ -1,11 +1,9 @@
 <template lang="html">
   <div>
-    <sui-segment class="title_container">
+    <sui-segment class="title_container_descriptive">
       <h1 is="sui-header">Compare Airports </h1>
-      <p>Select airports to compare statistics for {{ this.$route.query.airportCode }}</p>
-    </sui-segment>
-    <sui-segment>
-      <div class="uidropdown1">
+      <p>Select airports to compare statistics</p>
+      <div class="dropdown1">
         <label>Airport 1</label>
         <sui-dropdown 
           
@@ -16,7 +14,7 @@
           selection
           v-model="selected1"
         />
-      </div>
+      </div><br /><br /><br />
       <div class="dropdown2">
         <label>Airport 2</label>
         <sui-dropdown
@@ -30,25 +28,25 @@
       </div>
     </sui-segment>
 
-    <sui-card-group :items-per-row="2">                       
-      <sui-card style="z-index:1 !important;">
+    <sui-card-group style="width:calc(100vw - 240px - 150px) !important;" :items-per-row="2">                       
+      <sui-card style="z-index:1 !important;height:250px">
         <sui-dimmer :active="dimmer1Active" inverted>
           <sui-loader>Loading...</sui-loader>
         </sui-dimmer>
         <sui-card-content>
-          <sui-card-header> Mean minutes </sui-card-header>
+          <sui-card-header style="text-align:center;"> Mean minutes </sui-card-header>
           <div id="chart">
             <apexchart type=pie width=350 :options="minutes1ChartOptions" :series="meanSeries" />
           </div>                    
         </sui-card-content>
       </sui-card>
       
-      <sui-card style="z-index:1 !important;">
+      <sui-card style="z-index:1 !important;height:250px">
         <sui-dimmer :active="dimmer2Active" inverted>
           <sui-loader>Loading...</sui-loader>
         </sui-dimmer>
         <sui-card-content>
-          <sui-card-header> Standard deviation minutes </sui-card-header>
+          <sui-card-header style="text-align:center;"> Standard deviation minutes </sui-card-header>
           <div id="chart">
             <apexchart type=pie width=350 :options="minutes2ChartOptions" :series="standardDSeries" />
           </div>   

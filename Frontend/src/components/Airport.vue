@@ -1,16 +1,16 @@
 <template>
-	<sui-container class="Airport ui dimmable">
-        <div class="search">
-            <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
-        </div>
-        <sui-container class="ui segment title_container">
-            <h1 is="sui-header"> {{ city }}</h1>
-            <h4 is="sui-header"> {{ name }}</h4>
-        </sui-container>
-        <sui-card-group :items-per-row="3" stackable>
+	<div class="Airport">
+        <sui-segment class="title_container_carriers" >
+            <h1 is="sui-header" style="display:inline">Carriers | {{ city }}</h1>
+            <div class="search">
+                <sui-input type="text" v-model="searchQuery" placeholder="Search..." icon="search"></sui-input>
+            </div>
+            <h3 is="sui-header">{{ name }}</h3>
+        </sui-segment>
+        <sui-card-group class="card_group" :items-per-row="3" stackable>
             <CarrierCard v-for="carrier in filteredList" :carrier="carrier" :code="code" />
         </sui-card-group>
-	</sui-container>
+	</div>
 </template>
 
 <script>

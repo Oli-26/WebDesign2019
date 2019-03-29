@@ -1,71 +1,52 @@
 <template>
 	<div class="Carrier">
-		<sui-container class="ui segment title_container">
-            <h2 is="sui-header">Statistics | {{ this.carrierName }}</h2>
-            <h5 is="sui-header" v-if="airportCode != null">Airport: {{ this.airportCode }}</h5>
-            <router-link v-if="airportCode" :to="`/Carriers/${carrierCode}/averages?airportCode=${airportCode}`" > 
-              <button class="ui right floated button">Compare airports</button>
-            </router-link>
-            <router-link v-else :to="`/Carriers/${carrierCode}/averages`" > 
-              <button class="ui right floated button">Compare Airports</button>
-            </router-link>
-        </sui-container>
+		<sui-container class="ui segment title_container_carriers">
+      <h1 is="sui-header" style="display:inline;">Statistics | {{ this.carrierName }}</h1>
+      <router-link v-if="airportCode" :to="`/Carriers/${carrierCode}/averages?airportCode=${airportCode}`" > 
+        <button class="ui right floated button" style="font-size:1.5em;">Compare airports</button>
+      </router-link>
+      <router-link v-else :to="`/Carriers/${carrierCode}/averages`" > 
+        <button class="ui right floated button" style="font-size:1.5em;">Compare Airports</button>
+      </router-link>
+      <h5 is="sui-header" v-if="airportCode != null">Airport: {{ this.airportCode }}</h5>
+    </sui-container>
 	        
-        <sui-card-group :items-per-row="3" stackable>         
-              
-            <sui-card>
-              <sui-dimmer :active="dimmer1Active" inverted>
-                <sui-loader>Loading...</sui-loader>
-              </sui-dimmer>
-                <sui-card-content>
-                    <sui-card-header> General flight statistics </sui-card-header>
-                    <div class="chart">
-                      <apexchart type=pie width=350 :options="flightChartOptions" :series="flightsSeries" />
-                    </div>
-                    
-                  </sui-card-content>
-              
-            </sui-card>
-
-            <sui-card>
-               <sui-dimmer :active="dimmer2Active" inverted>
-                <sui-loader>Loading...</sui-loader>
-              </sui-dimmer>
-                <sui-card-content>
-                    <sui-card-header> Delay causes (delay in minutes) </sui-card-header>
-                    <div class="chart">
-                      <apexchart type=pie width=350 :options="minutesChartOptions" :series="minutesSeries" />
-                    </div>
-                    
-                  </sui-card-content>
-                 
-            </sui-card>
-            
-            
-            
-                      <sui-card>
-               <sui-dimmer :active="dimmer3Active" inverted>
-                <sui-loader>Loading...</sui-loader>
-              </sui-dimmer>
-                <sui-card-content>
-                    <sui-card-header> Delay causes (number of delays) </sui-card-header>
-                    <div class="chart">
-                      <apexchart type=pie width=350 :options="amountChartOptions" :series="amountSeries" />
-                    </div>
-                    
-                  </sui-card-content>
-                
-                
-            </sui-card>
-        </sui-card-group> 
-        
-        
-        <sui-container class="ui">
-            
-        </sui-container>
-        
-    
-    </div>
+    <sui-card-group class="card_group" :items-per-row="3" stackable>
+      <sui-card class="statistics_card">
+        <sui-dimmer :active="dimmer1Active" inverted>
+          <sui-loader>Loading...</sui-loader>
+        </sui-dimmer>
+        <sui-card-content>
+          <sui-card-header> General flight statistics </sui-card-header>
+          <div class="chart">
+            <apexchart style="text-align:left;" type=pie width=350 :options="flightChartOptions" :series="flightsSeries" />
+          </div>
+        </sui-card-content>
+      </sui-card>
+      <sui-card class="statistics_card">
+        <sui-dimmer :active="dimmer2Active" inverted>
+          <sui-loader>Loading...</sui-loader>
+        </sui-dimmer>
+        <sui-card-content>
+          <sui-card-header> Delay causes (delay in minutes) </sui-card-header>
+          <div class="chart">
+            <apexchart style="text-align:left;" type=pie width=350 :options="minutesChartOptions" :series="minutesSeries" />
+          </div>                  
+        </sui-card-content>    
+      </sui-card>
+      <sui-card class="statistics_card">
+        <sui-dimmer :active="dimmer3Active" inverted>
+          <sui-loader>Loading...</sui-loader>
+        </sui-dimmer>
+        <sui-card-content>
+            <sui-card-header> Delay causes (number of delays) </sui-card-header>
+            <div class="chart">
+              <apexchart style="text-align:left;" type=pie width=350 :options="amountChartOptions" :series="amountSeries" />
+            </div>
+        </sui-card-content>
+      </sui-card>
+    </sui-card-group>     
+  </div>
 </template>
 
 <style>
@@ -73,6 +54,9 @@ button {
   height:auto;
   padding:0px !important;
   color:#397c7f;
+}
+button:hover {
+  color:#397c7f !important;
 }
 </style>
 
