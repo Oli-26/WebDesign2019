@@ -69,12 +69,19 @@ def getAirport(code = None):
                 carriers = Carrier.query.filter_by(id = r.getCarrierID())
                 for c in carriers:
                     uri = "/carriers/" + c.getCode() + queryString
-                    if(not uri in dataList):
-                        dataList.append(uri)
+                    name = c.getName()
+                    dict = {
+                        "uri" : uri,
+                        "carrier-name" : name,
+                        "carrier-code" : c.getCode()
+                    }
+                    if(not dict in dataList):
+                        dataList.append(dict)
                     
             dict = {
                 "name" : airport.getName(),
                 "uri-list" : dataList
+                
             }
             
         else:
@@ -121,8 +128,9 @@ def getCarrier(code = None):
    
             for c in allCarriers:
                 dict = {
-                    "name" : c.getName(),
-                    "uri" : "/carriers/" + c.getCode()+"?content-type="+str(contentType)
+                    "carrier-name" : c.getName(),
+                    "uri" : "/carriers/" + c.getCode()+"?content-type="+str(contentType),
+                    "carrier-code" : c.getCode()
                 }
                 dataList.append(dict)
         else:
@@ -134,8 +142,10 @@ def getCarrier(code = None):
                 for r in relations:
                     carrier = Carrier.query.filter_by(id = r.getCarrierID()).first()
                     dict = {
-                        "name" : carrier.getName(),
-                        "uri" : "/carriers/"+carrier.getCode()+queryString
+                        "carrier-name" : carrier.getName(),
+                        "uri" : "/carriers/"+carrier.getCode()+queryString,
+                        "carrier-code" : carrier.getCode()
+                        
                     }
                     if(not (dict in dataList)):
                         dataList.append(dict)
@@ -156,7 +166,7 @@ def getCarrier(code = None):
                     airportURIs.append(uri)
                 
             dict = {
-                "name" : carrier.getName(),
+                "carrier-name" : carrier.getName(),
                 
                 "statistics-uri" : "/carriers/" + carrier.getCode() + "/statistics"+queryString,
                 "airport-uris" : airportURIs
@@ -176,6 +186,7 @@ def getCarrier(code = None):
             return json.dumps(dataList)
         else:
             return json.dumps(dict)
+ 
  
  
 @app.route("/carriers/<code>/statistics", methods=["GET"])
@@ -284,16 +295,16 @@ def setStatistics(code = None):
     carrier = Carrier.query.filter_by(code = code).first()
 
     if(airport is None):
-        flask.abort(400, "400(invalid paramater): airport code invalid")
+        flask.abort(404, "404(Airport not found)")
     if(time is None):
-        flask.abort(400, "400(invalid paramater): time is invalid")
+        flask.abort(404, "404(Time not found)")
     if(carrier is None):
-        flask.abort(400, "400(invalid paramater): carrier code invalid")
+        flask.abort(404, "404(Carrier not found)")
     
     
     relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = time.id).first()
     if(relation is None):
-        flask.abort(400, "Something went wrong, no relation found with input values.")
+        flask.abort(404, "Something went wrong, no relation found with input values.")
     
     statistics = Statistics.query.filter_by(relationID = relation.id).first()
     flights = Flights.query.filter_by(id = statistics.getFlightID()).first()
@@ -394,12 +405,12 @@ def addStatistics(code = None):
     carrier = Carrier.query.filter_by(code = code).first()
 
     if(airport is None):
-        flask.abort(400, "400(invalid paramater): airport code invalid")
+        flask.abort(404, "404(Airport not found)")
     if(time is None):
-        flask.abort(400, "400(invalid paramater): time is invalid")
+        flask.abort(404, "404(Time not found)")
     if(carrier is None):
-        flask.abort(400, "400(invalid paramater): carrier code invalid")
-    
+        flask.abort(404, "404(Carrier not found)")
+        
     oldRelation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = time.id).first()
     if(not oldRelation is None):
         flask.abort(400, "Relation already exists")
@@ -427,7 +438,7 @@ def addStatistics(code = None):
     db.sessions.add(statistics)
     
 
-    return "success" 
+    return "success", 201 
     
 @app.route("/carriers/<code>/statistics", methods=["DELETE"])
 def removeStatistics(code = None):
@@ -450,13 +461,13 @@ def removeStatistics(code = None):
     carrier = Carrier.query.filter_by(code = code).first()
 
     if(airport is None):
-        flask.abort(400, "400(invalid paramater): airport code invalid")
+        flask.abort(404, "404(Airport not found)")
     if(time is None):
-        flask.abort(400, "400(invalid paramater): time is invalid")
+        flask.abort(404, "404(Time not found)")
     if(carrier is None):
-        flask.abort(400, "400(invalid paramater): carrier code invalid")
-    
-    
+        flask.abort(404, "404(Carrier not found)")
+        
+        
     relation = Relation_table.query.filter_by(airportID = airport.id, carrierID = carrier.id, timeID = time.id).first()   
     if(relation is None):
         flask.abort(400, "Something went wrong, no relation found with input values.")
@@ -497,13 +508,13 @@ def getFlights(code = None):
     
     ## Logic     ##
     if(code is None):
-        flask.abort(400, "400(invalid paramater): airport code invalid")
+        flask.abort(404, "404(Airport not found)")
     else:
         if(airportCode is None):
            
             carrier = Carrier.query.filter_by(code = code).first()
             if(carrier is None):
-                flask.abort(400, "400(invalid paramter): carrier code invalid")
+                flask.abort(404, "404(Carrier not found)")
             dictionary = Utility.getFlightsByMonth(realCarrier = carrier, month = month)
             dictionary["carrier-uri"] = "/carriers/"+code+queryString
             
@@ -512,7 +523,7 @@ def getFlights(code = None):
             carrier = Carrier.query.filter_by(code = code).first()
             airport = Airport.query.filter_by(code = airportCode).first()
             if(carrier is None or airport is None):
-                flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
+                flask.abort(404, "404(Carrier or Airport not found)")
             dictionary = Utility.getFlightsByMonth(realCarrier = carrier, airport = airport, month = month)
             dictionary["carrier-uri"] = "/carriers/"+code+queryString
            
@@ -549,13 +560,13 @@ def getMinutes(code = None):
     
      ## Logic     ##
     if(code is None):
-        flask.abort(400, "400(invalid paramater): carrier code invalid")
+        flask.abort(404, "404(Carrier not found)")
     else:
         if(airportCode is None):
                 carrier = Carrier.query.filter_by(code = code).first()
                 
                 if(carrier is None):
-                    flask.abort(400, "400(invalid paramter): carrier code invalid")
+                    flask.abort(404, "404(Carrier not found)")
                 dictionary = Utility.getMinutesByMonth(realCarrier= carrier, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 
@@ -563,7 +574,7 @@ def getMinutes(code = None):
                 carrier = Carrier.query.filter_by(code = code).first()
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
-                    flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
+                    flask.abort(404, "404(Carrier or Airport not found)")
                 dictionary = Utility.getMinutesByMonth(realCarrier = carrier, airport = airport, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 
@@ -599,11 +610,11 @@ def getMinutesAverage(code = None):
     airport1 = Airport.query.filter_by(code = airportCode1).first()
     airport2 = Airport.query.filter_by(code = airportCode2).first()
     if(carrier is None or airport1 is None or airport2 is None):
-        flask.abort(400)
+        flask.abort(404, "404(Carrier or Airport not found)")
     
     dict = Utility.getMean(airport1, airport2, carrier, month)
     if(dict == "None"):
-        return flask.abort(400, "empty dictionary return for mean")
+        return flask.abort(500, "empty dictionary return for mean")
     standardDeviationDictionary = Utility.getStandardDeviation(airport1, airport2, carrier, month, dict)
     
     finalDictionary = {
@@ -641,13 +652,13 @@ def getAmount(code = None):
 
     ## Logic     ##
     if(code is None):
-        flask.abort(400, "400(invalid paramater): carrier code invalid")
+        flask.abort(404, "404(Carrier not found)")
     else:
         if(airportCode is None):
                 carrier = Carrier.query.filter_by(code = code).first()
                 
                 if(carrier is None):
-                    flask.abort(400, "400(invalid paramter): carrier code invalid")
+                    flask.abort(404, "404(Carrier not found)")
                 dictionary = Utility.getAmountByMonth(realCarrier = carrier, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 #return json.dumps(dictionary)
@@ -655,7 +666,7 @@ def getAmount(code = None):
                 carrier = Carrier.query.filter_by(code = code).first()
                 airport = Airport.query.filter_by(code = airportCode).first()
                 if(carrier is None or airport is None):
-                    flask.abort(400, "400(invalid paramater): airport/carrier code invalid")
+                    flask.abort(404, "404(Carrier or Airport not found)")
                 dictionary = Utility.getAmountByMonth(realCarrier = carrier, airport = airport, month = month)
                 dictionary["carrier-uri"] = "/carriers/"+code+queryString
                 #return json.dumps(dictionary)

@@ -222,17 +222,25 @@ class Utility():
                 nationalAviationSystem = nationalAviationSystem + minutes1.getNationalAviationSystem() + minutes2.getNationalAviationSystem()
                 total = total + minutes1.getTotal() + minutes2.getTotal()
                 i = i + 2
-        
+        dict = {}
         if i == 0:
-            return "None"
-        dict = {
-            "late-aircraft" : lateAircraft/i,
-            "carrier" : carrier/i,
-            "security" : security/i,
-            "weather" : weather/i,
-            "nas" : nationalAviationSystem/i,
-            "total": total/i
-        }
+            dict = {
+                "late-aircraft" : 0,
+                "carrier" : 0,
+                "security" : 0,
+                "weather" : 0,
+                "nas" : 0,
+                "total": 0
+            }
+        else:    
+            dict = {
+                "late-aircraft" : lateAircraft/i,
+                "carrier" : carrier/i,
+                "security" : security/i,
+                "weather" : weather/i,
+                "nas" : nationalAviationSystem/i,
+                "total": total/i
+            }
         if month is None:
             return {"month" : "all", "minutes-data-mean" : dict}
         return {"month" : Time.getMonthText(month), "minutes-data-mean" : dict}
@@ -285,17 +293,25 @@ class Utility():
                 total = total + pow(minutes2.getTotal()-meanDictionary["total"], 2)
                 i = i + 2
         
+        dict = {}
         if i == 0:
-            return "None"
-
-        dict = {
-            "late-aircraft" : math.sqrt(lateAircraft/i),
-            "carrier" : math.sqrt(carrier/i),
-            "security" :  math.sqrt(security/i),
-            "weather" :  math.sqrt(weather/i),
-            "nas" :  math.sqrt(nationalAviationSystem/i),
-            "total":  math.sqrt(total/i)
-        }
+            dict = {
+                "late-aircraft" : 0,
+                "carrier" : 0,
+                "security" : 0,
+                "weather" : 0,
+                "nas" : 0,
+                "total": 0
+            }
+        else:
+            dict = {
+                "late-aircraft" : math.sqrt(lateAircraft/i),
+                "carrier" : math.sqrt(carrier/i),
+                "security" :  math.sqrt(security/i),
+                "weather" :  math.sqrt(weather/i),
+                "nas" :  math.sqrt(nationalAviationSystem/i),
+                "total":  math.sqrt(total/i)
+            }
         if month is None:
             return {"month" : "all", "flights-data-standard-deviation" : dict}
-        return {"month" : Time.getMonthText(month), "flights-data" : dict}
+        return {"month" : Time.getMonthText(month), "standard-data" : dict}
